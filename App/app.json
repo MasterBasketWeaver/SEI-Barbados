@@ -1,0 +1,23 @@
+{
+  "id": "82e0dd74-e0d2-4a8f-8622-3f5aa08bc22a",
+  "name": "BryanA - SEI Barbados Functionality",
+  "publisher": "BryanA BC Developments Inc.",
+  "version": "13.0.1.0",
+  "brief": "Provides custom functionality for SEI Barbados.",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [],
+  "screenshots": [],
+  "platform": "11.0.0.0",
+  "application": "13.0.0.0",
+  "showMyCode": true,
+  "target": "Internal",
+  "runtime": "2.3",
+  "features": [
+    "NoImplicitWith"
+  ]
+}
