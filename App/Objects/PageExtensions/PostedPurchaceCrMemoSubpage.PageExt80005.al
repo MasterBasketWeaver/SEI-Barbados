@@ -1,4 +1,4 @@
-pageextension 80001 "BA Posted Purch. Inv. Subpage" extends "Posted Purch. Invoice Subform"
+pageextension 80005 "BA P. Purch. Cr.Memo Subpage" extends "Posted Purch. Cr. Memo Subform"
 {
     layout
     {

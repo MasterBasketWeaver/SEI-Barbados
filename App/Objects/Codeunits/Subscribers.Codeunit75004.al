@@ -16,6 +16,12 @@ codeunit 75004 "BA Subscibers"
         PurchInvLine."BA Commission Invoice No." := PurchaseLine."BA Commission Invoice No.";
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", 'OnBeforePurchCrMemoLineInsert', '', false, false)]
+    local procedure PurchPostOnBeforePurchCrMemoLineInsert(var PurchLine: Record "Purchase Line"; var PurchCrMemoLine: Record "Purch. Cr. Memo Line")
+    begin
+        PurchCrMemoLine."BA Commission Invoice No." := PurchLine."BA Commission Invoice No.";
+    end;
+
 
     var
         NoCommissionErr: Label '%1 %2 on line %3 requires a %4.';
