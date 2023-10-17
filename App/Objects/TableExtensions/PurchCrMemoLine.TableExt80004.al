@@ -6,7 +6,7 @@ tableextension 80004 "BA Purch. Cr. Memo Line" extends "Purch. Cr. Memo Line"
         {
             DataClassification = CustomerContent;
             Caption = 'Commission Invoice No.';
-            TableRelation = "Sales Invoice Header"."No.";
+            TableRelation = "Sales Invoice Header"."No."; //
             Editable = false;
         }
     }
