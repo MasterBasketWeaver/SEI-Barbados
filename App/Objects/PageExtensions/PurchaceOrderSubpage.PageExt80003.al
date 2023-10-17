@@ -1,4 +1,4 @@
-pageextension 80000 "BA Purch. Order Subpage" extends "Purchase Order Subform"
+pageextension 80003 "BA Purch. Order Subpage" extends "Purchase Order Subform"
 {
     layout
     {
