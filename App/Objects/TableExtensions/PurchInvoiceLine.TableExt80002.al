@@ -6,7 +6,7 @@ tableextension 80002 "BA Purch. Inv. Line" extends "Purch. Inv. Line"
         {
             DataClassification = CustomerContent;
             Caption = 'Commission Invoice No.';
-            TableRelation = "Service Invoice Header"."No.";
+            TableRelation = "Sales Invoice Header"."No."; //
             Editable = false;
         }
     }
