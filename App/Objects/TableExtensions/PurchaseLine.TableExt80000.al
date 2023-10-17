@@ -6,7 +6,7 @@ tableextension 80000 "BA Purchase Line" extends "Purchase Line"
         {
             DataClassification = CustomerContent;
             Caption = 'Commission Invoice No.';
-            TableRelation = "Service Invoice Header"."No.";
+            TableRelation = "Sales Invoice Header"."No."; //
         }
     }
 }
