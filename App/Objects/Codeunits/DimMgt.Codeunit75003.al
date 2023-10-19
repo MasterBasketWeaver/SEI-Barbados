@@ -8,7 +8,8 @@ codeunit 75003 "BA Dimension Mgt."
 
 
     var
-        MultiUpdateMsg: Label 'Lines %1 also have the same dimensions as line %2, do you want to update all the lines together?';
+        MultiUpdateSingleMsg: Label 'Line %1 also has the same dimensions as line %2, do you want to update both lines together?';
+        MultiUpdatePluralMsg: Label 'Lines %1 also have the same dimensions as line %2, do you want to update all the lines together?';
         SplitDimMsg: Label '%1 is part of a merged G/L Entry, do you want to split the G/L Entry to update the related dimensions?';
         CancelledMsg: Label 'Cancelled.';
         EditDimMsg: Label 'Edit Dimensions';
@@ -28,6 +29,7 @@ codeunit 75003 "BA Dimension Mgt."
         TempSalesInvLine: Record "Sales Invoice Line" temporary;
         DimMgt: Codeunit DimensionManagement;
         NewDimSet: Integer;
+        i: Integer;
         GlobalDim1: Code[20];
         GlobalDim2: Code[20];
 
@@ -100,7 +102,10 @@ codeunit 75003 "BA Dimension Mgt."
                                         TempSalesInvLine := SalesInvLine2;
                                         TempSalesInvLine.Insert(false);
                                     until SalesInvLine2.Next() = 0;
-                                    MultiUpdate := Confirm(StrSubstNo(MultiUpdateMsg, LineNos.ToText(), SalesInvLine."Line No."));
+                                    if TempSalesInvLine.Count() = 1 then
+                                        MultiUpdate := Confirm(StrSubstNo(MultiUpdateSingleMsg, LineNos.ToText(), SalesInvLine."Line No."))
+                                    else
+                                        MultiUpdate := Confirm(StrSubstNo(MultiUpdatePluralMsg, LineNos.ToText(), SalesInvLine."Line No."));
                                 end;
                                 if not MultiUpdate and (GLEntry.Amount <> -SalesInvLine.Amount) then begin
                                     if not Confirm(StrSubstNo(SplitDimMsg, SalesInvLine.RecordId)) then
