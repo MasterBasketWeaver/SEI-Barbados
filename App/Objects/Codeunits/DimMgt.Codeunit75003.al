@@ -6,6 +6,15 @@ codeunit 75003 "BA Dimension Mgt."
     tabledata "G/L Entry" = im;
 
 
+
+    var
+        MultiUpdateMsg: Label 'Lines %1 also have the same dimensions as line %2, do you want to update all the lines together?';
+        SplitDimMsg: Label '%1 is part of a merged G/L Entry, do you want to split the G/L Entry to update the related dimensions?';
+        CancelledMsg: Label 'Cancelled.';
+        EditDimMsg: Label 'Edit Dimensions';
+
+
+
     procedure EditSalesInvoiceLineDimensions(var SalesInvLine: Record "Sales Invoice Line")
     var
         GeneralPostingSet: Record "General Posting Setup";
@@ -15,16 +24,21 @@ codeunit 75003 "BA Dimension Mgt."
         GLSetup: Record "General Ledger Setup";
         TempGLEntry: Record "G/L Entry" temporary;
         DimSetEntry: Record "Dimension Set Entry" temporary;
+        SalesInvLine2: Record "Sales Invoice Line";
+        TempSalesInvLine: Record "Sales Invoice Line" temporary;
         DimMgt: Codeunit DimensionManagement;
         NewDimSet: Integer;
         GlobalDim1: Code[20];
         GlobalDim2: Code[20];
+
+        LineNos: TextBuilder;
+        MultiUpdate: Boolean;
     begin
         GLSetup.Get();
         GLSetup.TestField("Global Dimension 1 Code");
         GLSetup.TestField("Global Dimension 2 Code");
 
-        NewDimSet := DimMgt.EditDimensionSet(SalesInvLine."Dimension Set ID", 'Edit Dimensions');
+        NewDimSet := DimMgt.EditDimensionSet(SalesInvLine."Dimension Set ID", EditDimMsg);
         if NewDimSet = SalesInvLine."Dimension Set ID" then
             exit;
 
@@ -73,9 +87,24 @@ codeunit 75003 "BA Dimension Mgt."
                         repeat
                             GLEntry.SetRange("G/L Account No.", GeneralPostingSet."Sales Account");
                             if GLEntry.FindFirst() then begin
-                                if GLEntry.Amount <> -SalesInvLine.Amount then begin
-                                    if not Confirm(StrSubstNo('%1 is part of a merged G/L Entry, do you want to split the G/L Entry to update the related dimensions?', SalesInvLine.RecordId)) then
-                                        Error('Cancelled.');
+                                MultiUpdate := false;
+                                SalesInvLine2.SetRange("Document No.", SalesInvLine."Document No.");
+                                SalesInvLine2.SetFilter("Line No.", '<>%1', SalesInvLine."Line No.");
+                                SalesInvLine2.SetRange("Dimension Set ID", SalesInvLine."Dimension Set ID");
+                                if SalesInvLine2.FindSet() then begin
+                                    repeat
+                                        if LineNos.Length() = 0 then
+                                            LineNos.Append(Format(SalesInvLine2."Line No."))
+                                        else
+                                            LineNos.Append(StrSubstNo(', %1', SalesInvLine2."Line No."));
+                                        TempSalesInvLine := SalesInvLine2;
+                                        TempSalesInvLine.Insert(false);
+                                    until SalesInvLine2.Next() = 0;
+                                    MultiUpdate := Confirm(StrSubstNo(MultiUpdateMsg, LineNos.ToText(), SalesInvLine."Line No."));
+                                end;
+                                if not MultiUpdate and (GLEntry.Amount <> -SalesInvLine.Amount) then begin
+                                    if not Confirm(StrSubstNo(SplitDimMsg, SalesInvLine.RecordId)) then
+                                        Error(CancelledMsg);
                                     SplitGLEntry(GLEntry, -SalesInvLine.Amount, NewDimSet, GlobalDim1, GlobalDim2);
                                 end else
                                     if not TempGLEntry.Get(GLEntry."Entry No.") then begin
@@ -112,7 +141,18 @@ codeunit 75003 "BA Dimension Mgt."
             until TempGLEntry.Next() = 0;
 
         SalesInvLine.Validate("Dimension Set ID", NewDimSet);
+        SalesInvLine.Validate("Shortcut Dimension 1 Code", GlobalDim1);
+        SalesInvLine.Validate("Shortcut Dimension 2 Code", GlobalDim2);
         SalesInvLine.Modify(true);
+
+        if MultiUpdate and TempSalesInvLine.FindSet() then
+            repeat
+                SalesInvLine.Get(TempSalesInvLine.RecordId());
+                SalesInvLine.Validate("Dimension Set ID", NewDimSet);
+                SalesInvLine.Validate("Shortcut Dimension 1 Code", GlobalDim1);
+                SalesInvLine.Validate("Shortcut Dimension 2 Code", GlobalDim2);
+                SalesInvLine.Modify(true);
+            until TempSalesInvLine.Next() = 0;
     end;
 
     local procedure SplitGLEntry(var GLEntry: Record "G/L Entry"; Amount: Integer; NewDimID: Integer; GlobalDim1: Code[20]; GlobalDim2: Code[20])
