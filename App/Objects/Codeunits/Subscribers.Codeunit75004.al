@@ -23,6 +23,16 @@ codeunit 75004 "BA Subscibers"
         PurchCrMemoLine."BA Commission Invoice No." := PurchLine."BA Commission Invoice No.";
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforeSalesInvHeaderInsert', '', false, false)]
+    local procedure SalesPostOnBeforeSalesInvHeaderInsert(var SalesInvHeader: Record "Sales Invoice Header")
+    begin
+        SalesInvHeader."BA Order No." := SalesInvHeader."Order No.";
+        SalesInvHeader."BA Posting Date" := SalesInvHeader."Posting Date";
+        SalesInvHeader."BA Sell-to Customer Name" := SalesInvHeader."Sell-to Customer Name";
+        SalesInvHeader."BA Sell-to Customer No." := SalesInvHeader."Sell-to Customer No.";
+        SalesInvHeader."BA Ship-to Name" := SalesInvHeader."Ship-to Name";
+    end;
+
 
     var
         NoCommissionErr: Label '%1 %2 on line %3 requires a %4.';
