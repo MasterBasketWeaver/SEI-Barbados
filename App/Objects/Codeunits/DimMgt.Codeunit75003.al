@@ -160,13 +160,14 @@ codeunit 75003 "BA Dimension Mgt."
             until TempSalesInvLine.Next() = 0;
     end;
 
-    local procedure SplitGLEntry(var GLEntry: Record "G/L Entry"; Amount: Integer; NewDimID: Integer; GlobalDim1: Code[20]; GlobalDim2: Code[20])
+    local procedure SplitGLEntry(var GLEntry: Record "G/L Entry"; Amount: Decimal; NewDimID: Integer; GlobalDim1: Code[20]; GlobalDim2: Code[20])
     var
         NewGLEntry: Record "G/L Entry";
         EntryNo: Integer;
     begin
         if NewGLEntry.FindLast() then
             EntryNo := NewGLEntry."Entry No.";
+
         NewGLEntry := GLEntry;
         NewGLEntry."Entry No." := EntryNo + 1;
         NewGLEntry.Amount := Amount;
