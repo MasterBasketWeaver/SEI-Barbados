@@ -1,4 +1,4 @@
-tableextension 80008 "BA Customer" extends Customer
+tableextension 80009 "BA Vendor" extends Vendor
 {
     fields
     {
