@@ -1,4 +1,4 @@
-pageextension 80006 "BA Customer Card" extends "Customer Card"
+pageextension 80013 "BA Customer Card" extends "Customer Card"
 {
     layout
     {
@@ -46,6 +46,13 @@ pageextension 80006 "BA Customer Card" extends "Customer Card"
         {
             ApplicationArea = all;
             Visible = false;
+        }
+        addafter("Post Code")
+        {
+            field("BA Region"; Rec."BA Region")
+            {
+                ApplicationArea = all;
+            }
         }
     }
 }
