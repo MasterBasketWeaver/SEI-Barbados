@@ -1,10 +1,45 @@
-codeunit 75005 "BA Populate DropDown Fields"
+codeunit 75005 "BA Install Data"
 {
     Subtype = Install;
 
     trigger OnInstallAppPerCompany()
     begin
-        PopulateFields();
+        // PopulateFields();
+        PopulateProvinceStateFields();
+    end;
+
+
+    local procedure PopulateProvinceStateFields()
+    var
+        Customer: Record Customer;
+        Vendor: Record Vendor;
+        Nos: List of [Code[20]];
+        RecNo: Code[20];
+    begin
+        Customer.SetRange("BA Province/State", '');
+        Customer.SetFilter(County, '<>%1', '');
+        if Customer.FindSet() then
+            repeat
+                Nos.Add(Customer."No.");
+            until Customer.Next() = 0;
+        foreach RecNo in Nos do begin
+            Customer.Get(RecNo);
+            Customer."BA Province/State" := Customer.County;
+            Customer.Modify(false);
+        end;
+
+        Clear(Nos);
+        Vendor.SetRange("BA Province/State", '');
+        Vendor.SetFilter(County, '<>%1', '');
+        if Vendor.FindSet() then
+            repeat
+                Nos.Add(Vendor."No.");
+            until Vendor.Next() = 0;
+        foreach RecNo in Nos do begin
+            Vendor.Get(RecNo);
+            Vendor."BA Province/State" := Vendor.County;
+            Vendor.Modify(false);
+        end;
     end;
 
     local procedure PopulateFields()
