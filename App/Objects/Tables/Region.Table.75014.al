@@ -1,7 +1,9 @@
-table 75011 "BA Region"
+table 75014 "BA Region"
 {
     DataClassification = CustomerContent;
     Caption = 'Region';
+    DrillDownPageId = "BA Regions";
+    LookupPageId = "BA Regions";
 
     fields
     {
