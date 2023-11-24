@@ -1,6 +1,7 @@
 codeunit 75005 "BA Populate DropDown Fields"
 {
     Subtype = Install;
+    Permissions = tabledata "Sales Invoice Header" = m;
 
     trigger OnInstallAppPerCompany()
     begin

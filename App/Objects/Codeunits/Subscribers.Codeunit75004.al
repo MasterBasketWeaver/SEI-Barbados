@@ -34,6 +34,32 @@ codeunit 75004 "BA Subscibers"
     end;
 
 
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterInitRecord', '', false, false)]
+    local procedure SalesHeaderOnAfterInitRecord(var SalesHeader: Record "Sales Header")
+    begin
+        case SalesHeader."Document Type" of
+            SalesHeader."Document Type"::Quote:
+                begin
+                    SalesHeader.SetHideValidationDialog(true);
+                    SalesHeader.Validate("Order Date", 0D);
+                    SalesHeader.Validate("BA Quote Date", Today());
+                    SalesHeader.Validate("Shipment Date", 0D);
+                end;
+            SalesHeader."Document Type"::Order:
+                SalesHeader.Validate("Shipment Date", 0D);
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Quote to Order", 'OnAfterOnRun', '', false, false)]
+    local procedure SalesQuoteToOrderOnAfterOnRun(var SalesOrderHeader: Record "Sales Header")
+    begin
+        SalesOrderHeader.SetHideValidationDialog(true);
+        SalesOrderHeader.Validate("Document Date", Today());
+        SalesOrderHeader.Validate("Order Date", Today());
+        SalesOrderHeader.Validate("Shipment Date", 0D);
+        SalesOrderHeader.Modify(true);
+    end;
+
     var
         NoCommissionErr: Label '%1 %2 on line %3 requires a %4.';
 }
