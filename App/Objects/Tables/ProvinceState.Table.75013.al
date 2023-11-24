@@ -1,7 +1,9 @@
-table 75010 "BA Province/State"
+table 75013 "BA Province/State"
 {
     DataClassification = CustomerContent;
     Caption = 'Province/State';
+    DrillDownPageId = "BA Province/State List";
+    LookupPageId = "BA Province/State List";
 
     fields
     {
