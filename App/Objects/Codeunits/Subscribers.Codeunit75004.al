@@ -37,11 +37,17 @@ codeunit 75004 "BA Subscibers"
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterInitRecord', '', false, false)]
     local procedure SalesHeaderOnAfterInitRecord(var SalesHeader: Record "Sales Header")
     begin
-        if SalesHeader."Document Type" <> SalesHeader."Document Type"::Quote then
-            exit;
-        SalesHeader.SetHideValidationDialog(true);
-        SalesHeader.Validate("Order Date", 0D);
-        SalesHeader.Validate("BA Quote Date", Today());
+        case SalesHeader."Document Type" of
+            SalesHeader."Document Type"::Quote:
+                begin
+                    SalesHeader.SetHideValidationDialog(true);
+                    SalesHeader.Validate("Order Date", 0D);
+                    SalesHeader.Validate("BA Quote Date", Today());
+                    SalesHeader.Validate("Shipment Date", 0D);
+                end;
+            SalesHeader."Document Type"::Order:
+                SalesHeader.Validate("Shipment Date", 0D);
+        end;
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Quote to Order", 'OnAfterOnRun', '', false, false)]
@@ -50,6 +56,7 @@ codeunit 75004 "BA Subscibers"
         SalesOrderHeader.SetHideValidationDialog(true);
         SalesOrderHeader.Validate("Document Date", Today());
         SalesOrderHeader.Validate("Order Date", Today());
+        SalesOrderHeader.Validate("Shipment Date", 0D);
         SalesOrderHeader.Modify(true);
     end;
 
