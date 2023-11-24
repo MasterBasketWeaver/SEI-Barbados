@@ -37,6 +37,12 @@ tableextension 80003 "BA Sales Invoice Header" extends "Sales Invoice Header"
             Editable = false;
             Description = 'Used for DropDown FieldGroup';
         }
+        field(80010; "BA Quote Date"; Date)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Quote Date';
+            Editable = false;
+        }
     }
 
     fieldgroups

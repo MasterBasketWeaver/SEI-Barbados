@@ -41,12 +41,14 @@ codeunit 75004 "BA Subscibers"
             exit;
         SalesHeader.SetHideValidationDialog(true);
         SalesHeader.Validate("Order Date", 0D);
+        SalesHeader.Validate("BA Quote Date", Today());
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Quote to Order", 'OnAfterOnRun', '', false, false)]
     local procedure SalesQuoteToOrderOnAfterOnRun(var SalesOrderHeader: Record "Sales Header")
     begin
         SalesOrderHeader.SetHideValidationDialog(true);
+        SalesOrderHeader.Validate("Document Date", Today());
         SalesOrderHeader.Validate("Order Date", Today());
         SalesOrderHeader.Modify(true);
     end;
