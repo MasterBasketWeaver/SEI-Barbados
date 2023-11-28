@@ -37,6 +37,24 @@ codeunit 75004 "BA Subscibers"
         SalesInvHeader."BA Ship-to County Fullname" := SalesHeader."BA Ship-to County Fullname";
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforeSalesShptHeaderInsert', '', false, false)]
+    local procedure SalesPostOnBeforeSalesShptHeaderInsert(var SalesShptHeader: Record "Sales Shipment Header"; SalesHeader: Record "Sales Header")
+    begin
+        SalesHeader.CalcFields("BA Bill-to County Fullname", "BA Sell-to County Fullname", "BA Ship-to County Fullname");
+        SalesShptHeader."BA Bill-to County Fullname" := SalesHeader."BA Bill-to County Fullname";
+        SalesShptHeader."BA Sell-to County Fullname" := SalesHeader."BA Sell-to County Fullname";
+        SalesShptHeader."BA Ship-to County Fullname" := SalesHeader."BA Ship-to County Fullname";
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforeSalesCrMemoHeaderInsert', '', false, false)]
+    local procedure SalesPostOnBeforeSalesCrMemoHeaderInsert(var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; SalesHeader: Record "Sales Header")
+    begin
+        SalesHeader.CalcFields("BA Bill-to County Fullname", "BA Sell-to County Fullname", "BA Ship-to County Fullname");
+        SalesCrMemoHeader."BA Bill-to County Fullname" := SalesHeader."BA Bill-to County Fullname";
+        SalesCrMemoHeader."BA Sell-to County Fullname" := SalesHeader."BA Sell-to County Fullname";
+        SalesCrMemoHeader."BA Ship-to County Fullname" := SalesHeader."BA Ship-to County Fullname";
+    end;
+
 
     var
         NoCommissionErr: Label '%1 %2 on line %3 requires a %4.';
