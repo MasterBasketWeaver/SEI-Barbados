@@ -64,4 +64,23 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
             }
         }
     }
+    actions
+    {
+        addlast(Action59)
+        {
+            action("BA Proforma Invoice")
+            {
+                ApplicationArea = all;
+                Caption = 'Proforma Invoice';
+                Image = ViewPostedOrder;
+
+                trigger OnAction()
+                var
+                    DocPrint: Codeunit "Document-Print";
+                begin
+                    DocPrint.PrintProformaSalesInvoice(Rec);
+                end;
+            }
+        }
+    }
 }
