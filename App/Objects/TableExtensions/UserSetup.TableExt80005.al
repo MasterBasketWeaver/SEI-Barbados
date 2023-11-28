@@ -1,4 +1,4 @@
-tableextension 80005 "BA User Setup" extends "User Setup"
+tableextension 80011 "BA User Setup" extends "User Setup"
 {
     fields
     {
