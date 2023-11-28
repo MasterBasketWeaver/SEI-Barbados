@@ -47,13 +47,15 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
     }
     actions
     {
-        addlast(Action59)
+        addlast(Reporting)
         {
             action("BA Proforma Invoice")
             {
                 ApplicationArea = all;
                 Caption = 'Proforma Invoice';
                 Image = ViewPostedOrder;
+                Promoted = true;
+                PromotedCategory = Report;
 
                 trigger OnAction()
                 var
