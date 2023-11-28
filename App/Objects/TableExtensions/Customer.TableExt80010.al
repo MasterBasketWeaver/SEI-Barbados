@@ -36,7 +36,6 @@ tableextension 80010 "BA Customer" extends Customer
                     "BA Region" := ''
                 else
                     Rec.CalcFields("BA Region");
-
             end;
         }
     }

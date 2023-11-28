@@ -1,24 +1,19 @@
-pageextension 80006 "BA Sales Quote" extends "Sales Quote"
+pageextension 80026 "BA Sales Invoice" extends "Sales Invoice"
 {
     layout
     {
-        modify("Order Date")
-        {
-            ApplicationArea = all;
-            Editable = false;
-        }
-        modify("Shipment Date")
+        modify("Bill-to Country/Region Code")
         {
             ApplicationArea = all;
             Visible = false;
-            Editable = false;
             Enabled = false;
         }
-        addafter("Document Date")
+        addafter(BillToOptions)
         {
-            field("BA Quote Date"; Rec."BA Quote Date")
+            field("BA Bill-to Country/Region Code"; Rec."Bill-to Country/Region Code")
             {
                 ApplicationArea = all;
+                Caption = 'Country';
             }
         }
         modify("Sell-to Country/Region Code")
@@ -35,27 +30,13 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
                 Caption = 'Country';
             }
         }
-        modify("Bill-to Country/Region Code")
-        {
-            ApplicationArea = all;
-            Visible = false;
-            Enabled = false;
-        }
-        addbefore("Bill-to Name")
-        {
-            field("BA Bill-to Country/Region Code"; Rec."Bill-to Country/Region Code")
-            {
-                ApplicationArea = all;
-                Caption = 'Country';
-            }
-        }
         modify("Ship-to Country/Region Code")
         {
             ApplicationArea = all;
             Visible = false;
             Enabled = false;
         }
-        addfirst(Control72)
+        addbefore("Ship-to Name")
         {
             field("BA Ship-to Country/Region Code"; Rec."Ship-to Country/Region Code")
             {

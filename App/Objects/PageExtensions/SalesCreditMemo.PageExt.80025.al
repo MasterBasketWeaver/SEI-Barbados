@@ -1,19 +1,7 @@
-pageextension 80007 "BA Sales Order" extends "Sales Order"
+pageextension 80025 "BA Sales Credit Memo" extends "Sales Credit Memo"
 {
     layout
     {
-        modify("Order Date")
-        {
-            ApplicationArea = all;
-            Editable = false;
-        }
-        addafter("Document Date")
-        {
-            field("BA Quote Date"; Rec."BA Quote Date")
-            {
-                ApplicationArea = all;
-            }
-        }
         modify("Sell-to Country/Region Code")
         {
             ApplicationArea = all;
@@ -26,7 +14,6 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
             {
                 ApplicationArea = all;
                 Caption = 'Country';
-                Editable = false;
             }
         }
         modify("Bill-to Country/Region Code")
@@ -41,22 +28,6 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
             {
                 ApplicationArea = all;
                 Caption = 'Country';
-                Editable = false;
-            }
-        }
-        modify("Ship-to Country/Region Code")
-        {
-            ApplicationArea = all;
-            Visible = false;
-            Enabled = false;
-        }
-        addbefore("Ship-to Name")
-        {
-            field("BA Ship-to Country/Region Code"; Rec."Ship-to Country/Region Code")
-            {
-                ApplicationArea = all;
-                Caption = 'Country';
-                Editable = false;
             }
         }
         addafter("Sell-to County")
@@ -66,12 +37,12 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
                 ApplicationArea = all;
             }
         }
-        addafter("Ship-to County")
+        modify("Sell-to County")
         {
-            field("BA Ship-to County Fullname"; Rec."BA Ship-to County Fullname")
-            {
-                ApplicationArea = all;
-            }
+            trigger OnAfterValidate()
+            begin
+                Rec.CalcFields("BA Sell-to County Fullname");
+            end;
         }
         addafter("Bill-to County")
         {
@@ -79,6 +50,13 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
             {
                 ApplicationArea = all;
             }
+        }
+        modify("Bill-to County")
+        {
+            trigger OnAfterValidate()
+            begin
+                Rec.CalcFields("BA Bill-to County Fullname");
+            end;
         }
     }
 }
