@@ -7,6 +7,7 @@ tableextension 80006 "BA Sales Shipment Header" extends "Sales Shipment Header"
             DataClassification = CustomerContent;
             Caption = 'Quote Date';
             Editable = false;
+            //
         }
     }
 }

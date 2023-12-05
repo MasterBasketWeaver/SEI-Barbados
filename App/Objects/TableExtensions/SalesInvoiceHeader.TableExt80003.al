@@ -42,6 +42,7 @@ tableextension 80003 "BA Sales Invoice Header" extends "Sales Invoice Header"
             DataClassification = CustomerContent;
             Caption = 'Quote Date';
             Editable = false;
+            //
         }
     }
 
