@@ -56,6 +56,19 @@ codeunit 75004 "BA Subscibers"
     end;
 
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Format Address", 'OnBeforeSalesInvBillTo', '', false, false)]
+    local procedure FormatAddressOnBeforeSalesInvBillTo(var AddrArray: array[8] of Text[90]; var Handled: Boolean; var SalesInvHeader: Record "Sales Invoice Header")
+    var
+        FormatAddress: Codeunit "Format Address";
+    begin
+        Handled := true;
+        SalesInvHeader.CalcFields("BA Bill-to County Fullname");
+        FormatAddress.FormatAddr(AddrArray, SalesInvHeader."Bill-to Name", SalesInvHeader."Bill-to Name 2", SalesInvHeader."Bill-to Contact",
+            SalesInvHeader."Bill-to Address", SalesInvHeader."Bill-to Address 2", SalesInvHeader."Bill-to City", SalesInvHeader."Bill-to Post Code",
+            SalesInvHeader."Bill-to County", SalesInvHeader."Bill-to Country/Region Code");
+    end;
+
+
     var
         NoCommissionErr: Label '%1 %2 on line %3 requires a %4.';
 }
