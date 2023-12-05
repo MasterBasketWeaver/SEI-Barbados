@@ -6,6 +6,7 @@ tableextension 80005 "BA Sales Header" extends "Sales Header"
         {
             DataClassification = CustomerContent;
             Caption = 'Quote Date';
+            Editable = false;
         }
         modify("Sell-to Country/Region Code")
         {

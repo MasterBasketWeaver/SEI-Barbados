@@ -41,6 +41,7 @@ tableextension 80003 "BA Sales Invoice Header" extends "Sales Invoice Header"
         {
             DataClassification = CustomerContent;
             Caption = 'Quote Date';
+            Editable = false;
         }
         field(80011; "BA Sell-to County Fullname"; Text[50])
         {
@@ -59,7 +60,6 @@ tableextension 80003 "BA Sales Invoice Header" extends "Sales Invoice Header"
             DataClassification = CustomerContent;
             Caption = 'Province/State Fullname';
             Editable = false;
-            //
         }
     }
 
