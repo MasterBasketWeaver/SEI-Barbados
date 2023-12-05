@@ -59,6 +59,7 @@ tableextension 80003 "BA Sales Invoice Header" extends "Sales Invoice Header"
             DataClassification = CustomerContent;
             Caption = 'Province/State Fullname';
             Editable = false;
+            //
         }
     }
 

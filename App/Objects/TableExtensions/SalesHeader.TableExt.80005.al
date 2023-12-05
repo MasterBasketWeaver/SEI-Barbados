@@ -69,6 +69,7 @@ tableextension 80005 "BA Sales Header" extends "Sales Header"
             FieldClass = FlowField;
             CalcFormula = lookup("BA Province/State".Name where("Print Full Name" = const(true), "Country/Region Code" = field("Ship-to Country/Region Code"), Symbol = field("Ship-to County")));
             Editable = false;
+            //
         }
     }
 }
