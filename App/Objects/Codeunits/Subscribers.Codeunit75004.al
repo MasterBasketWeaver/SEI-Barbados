@@ -62,11 +62,40 @@ codeunit 75004 "BA Subscibers"
         FormatAddress: Codeunit "Format Address";
     begin
         Handled := true;
-        SalesInvHeader.CalcFields("BA Bill-to County Fullname");
+        if SalesInvHeader."BA Bill-to County Fullname" <> '' then
+            SalesInvHeader."Bill-to County" := SalesInvHeader."BA Bill-to County Fullname";
         FormatAddress.FormatAddr(AddrArray, SalesInvHeader."Bill-to Name", SalesInvHeader."Bill-to Name 2", SalesInvHeader."Bill-to Contact",
             SalesInvHeader."Bill-to Address", SalesInvHeader."Bill-to Address 2", SalesInvHeader."Bill-to City", SalesInvHeader."Bill-to Post Code",
             SalesInvHeader."Bill-to County", SalesInvHeader."Bill-to Country/Region Code");
     end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Format Address", 'OnBeforeSalesCrMemoBillTo', '', false, false)]
+    local procedure FormatAddressOnBeforeSalesCrMemoBillTo(var AddrArray: array[8] of Text[90]; var Handled: Boolean; var SalesCrMemoHeader: Record "Sales Cr.Memo Header")
+    var
+        FormatAddress: Codeunit "Format Address";
+    begin
+        Handled := true;
+        if SalesCrMemoHeader."BA Bill-to County Fullname" <> '' then
+            SalesCrMemoHeader."Bill-to County" := SalesCrMemoHeader."BA Bill-to County Fullname";
+        FormatAddress.FormatAddr(AddrArray, SalesCrMemoHeader."Bill-to Name", SalesCrMemoHeader."Bill-to Name 2", SalesCrMemoHeader."Bill-to Contact",
+            SalesCrMemoHeader."Bill-to Address", SalesCrMemoHeader."Bill-to Address 2", SalesCrMemoHeader."Bill-to City", SalesCrMemoHeader."Bill-to Post Code",
+            SalesCrMemoHeader."Bill-to County", SalesCrMemoHeader."Bill-to Country/Region Code");
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Format Address", 'OnBeforeSalesHeaderBillTo', '', false, false)]
+    local procedure FormatAddressOnBeforeSalesHeaderBillTo(var AddrArray: array[8] of Text[90]; var Handled: Boolean; var SalesHeader: Record "Sales Header")
+    var
+        FormatAddress: Codeunit "Format Address";
+    begin
+        Handled := true;
+        SalesHeader.CalcFields("BA Bill-to County Fullname");
+        if SalesHeader."BA Bill-to County Fullname" <> '' then
+            SalesHeader."Bill-to County" := SalesHeader."BA Bill-to County Fullname";
+        FormatAddress.FormatAddr(AddrArray, SalesHeader."Bill-to Name", SalesHeader."Bill-to Name 2", SalesHeader."Bill-to Contact",
+            SalesHeader."Bill-to Address", SalesHeader."Bill-to Address 2", SalesHeader."Bill-to City", SalesHeader."Bill-to Post Code",
+            SalesHeader."Bill-to County", SalesHeader."Bill-to Country/Region Code");
+    end;
+
 
 
     var
