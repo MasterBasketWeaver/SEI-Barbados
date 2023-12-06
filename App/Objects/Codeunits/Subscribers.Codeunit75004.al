@@ -434,9 +434,44 @@ codeunit 75004 "BA Subscibers"
 
 
 
+    [EventSubscriber(ObjectType::Table, Database::"Country/Region", 'OnAfterInsertEvent', '', false, false)]
+    local procedure UserSetupOnAfterInsert()
+    begin
+        CheckIfCanMakeCountryChanges();
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Country/Region", 'OnAfterModifyEvent', '', false, false)]
+    local procedure UserSetupOnAfterModify()
+    begin
+        CheckIfCanMakeCountryChanges();
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Country/Region", 'OnAfterDeleteEvent', '', false, false)]
+    local procedure UserSetupOnAfterDelete()
+    begin
+        CheckIfCanMakeCountryChanges();
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Country/Region", 'OnAfterRenameEvent', '', false, false)]
+    local procedure UserSetupOnAfterRename()
+    begin
+        CheckIfCanMakeCountryChanges();
+    end;
+
+
+    procedure CheckIfCanMakeCountryChanges()
+    var
+        UserSetup: Record "User Setup";
+    begin
+        if UserId() <> 'SYSTEM' then
+            if not UserSetup.Get(UserId()) or not UserSetup."BA Allow Changing Countries" then
+                Error(InvalidPermissionError);
+    end;
+
 
 
 
     var
         NoCommissionErr: Label '%1 %2 on line %3 requires a %4.';
+        InvalidPermissionError: Label 'You do not have permission to make this change.';
 }
