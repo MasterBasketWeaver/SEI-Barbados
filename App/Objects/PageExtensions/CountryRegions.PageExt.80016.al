@@ -12,4 +12,28 @@ pageextension 80016 "BA Country/Regions" extends "Countries/Regions"
             }
         }
     }
+
+    actions
+    {
+        addlast(Processing)
+        {
+            action("BA Add States/Provinces")
+            {
+                ApplicationArea = all;
+                Image = Addresses;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+                Caption = 'Add States/Provinces';
+
+                trigger OnAction()
+                var
+                    Install: Codeunit "BA Install Data";
+                begin
+                    Install.PopulateStates(true);
+                end;
+            }
+        }
+    }
 }

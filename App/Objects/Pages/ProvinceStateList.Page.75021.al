@@ -32,6 +32,7 @@ page 75021 "BA Province/State List"
                 {
                     ApplicationArea = all;
                     ShowMandatory = true;
+
                 }
                 field(Name; Rec.Name)
                 {
@@ -44,4 +45,6 @@ page 75021 "BA Province/State List"
             }
         }
     }
+
+
 }

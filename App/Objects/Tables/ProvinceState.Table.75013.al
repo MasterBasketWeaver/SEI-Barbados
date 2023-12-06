@@ -13,7 +13,7 @@ table 75013 "BA Province/State"
             NotBlank = true;
             TableRelation = "Country/Region".Code;
         }
-        field(2; "Symbol"; Code[5])
+        field(2; "Symbol"; Code[30])
         {
             DataClassification = CustomerContent;
             NotBlank = true;
@@ -31,6 +31,14 @@ table 75013 "BA Province/State"
         field(5; "Print Full Name"; Boolean)
         {
             DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            var
+                Install: Codeunit "BA Install Data";
+            begin
+                if "Print Full Name" then
+                    Install.PopulateProvinceStateFields(Symbol);
+            end;
         }
     }
 
@@ -66,8 +74,9 @@ table 75013 "BA Province/State"
     var
         UserSetup: Record "User Setup";
     begin
-        if not UserSetup.Get(UserId()) or not UserSetup."BA Allow Changing Counties" then
-            Error(InvalidPermissionError);
+        if UserId() <> 'SYSTEM' then
+            if not UserSetup.Get(UserId()) or not UserSetup."BA Allow Changing Counties" then
+                Error(InvalidPermissionError);
     end;
 
     var
