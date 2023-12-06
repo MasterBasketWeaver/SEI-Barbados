@@ -47,5 +47,26 @@ pageextension 80024 "BA Posted Purchase Credit Memo" extends "Posted Purchase Cr
                 Editable = false;
             }
         }
+        addafter("Pay-to County")
+        {
+            field("BA Sell-to County Fullname"; Rec."BA Pay-to County Fullname")
+            {
+                ApplicationArea = all;
+            }
+        }
+        addafter("Ship-to County")
+        {
+            field("BA Ship-to County Fullname"; Rec."BA Ship-to County Fullname")
+            {
+                ApplicationArea = all;
+            }
+        }
+        addafter("Buy-from County")
+        {
+            field("BA Bill-to County Fullname"; Rec."BA Buy-from County Fullname")
+            {
+                ApplicationArea = all;
+            }
+        }
     }
 }

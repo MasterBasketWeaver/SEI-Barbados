@@ -12,6 +12,10 @@ pageextension 80015 "BA User Setup" extends "User Setup"
             {
                 ApplicationArea = all;
             }
+            field("BA Allow Changing Countries"; Rec."BA Allow Changing Countries")
+            {
+                ApplicationArea = all;
+            }
         }
     }
 }
