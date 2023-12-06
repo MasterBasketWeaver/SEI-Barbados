@@ -23,6 +23,12 @@ codeunit 75004 "BA Subscibers"
         PurchCrMemoLine."BA Commission Invoice No." := PurchLine."BA Commission Invoice No.";
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", 'OnBeforePurchRcptLineInsert', '', false, false)]
+    local procedure PurchPostOnBeforePurchRcptLineInsert(var PurchLine: Record "Purchase Line"; var PurchRcptLine: Record "Purch. Rcpt. Line")
+    begin
+        PurchRcptLine."BA Commission Invoice No." := PurchLine."BA Commission Invoice No.";
+    end;
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforeSalesInvHeaderInsert', '', false, false)]
     local procedure SalesPostOnBeforeSalesInvHeaderInsert(var SalesInvHeader: Record "Sales Invoice Header"; SalesHeader: Record "Sales Header")
     begin
