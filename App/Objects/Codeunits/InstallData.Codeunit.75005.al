@@ -3,16 +3,18 @@ codeunit 75005 "BA Install Data"
     Subtype = Install;
     Permissions = tabledata "Sales Invoice Header" = m,
     Tabledata "Sales Shipment Header" = m,
-    Tabledata "Sales Cr.Memo Header" = m;
+    Tabledata "Sales Cr.Memo Header" = m,
+    tabledata "BA Province/State" = rimd;
 
     trigger OnInstallAppPerCompany()
     begin
         // PopulateFields();
-        PopulateProvinceStateFields();
+        PopulateStates(false);
+        PopulateProvinceStateFields('');
     end;
 
 
-    local procedure PopulateProvinceStateFields()
+    procedure PopulateProvinceStateFields(Filter: Text)
     var
         Customer: Record Customer;
         Vendor: Record Vendor;
@@ -48,7 +50,8 @@ codeunit 75005 "BA Install Data"
             Vendor.Modify(false);
         end;
 
-
+        if Filter <> '' then
+            ProvinceState.SetRange(Symbol, Filter);
         ProvinceState.SetRange("Print Full Name", true);
         if ProvinceState.FindSet() then
             repeat
@@ -108,5 +111,95 @@ codeunit 75005 "BA Install Data"
             SalesInvoiceHeader."BA Ship-to Name" := SalesInvoiceHeader."Ship-to Name";
             SalesInvoiceHeader.Modify(false);
         until TempSalesInvHeader.Next() = 0;
+    end;
+
+
+    procedure PopulateStates(Manual: Boolean)
+    var
+        UserSetup: Record "User Setup";
+        ProvState: Record "BA Province/State";
+        Countries: List of [Code[10]];
+        States: array[5, 100] of Code[30];
+        Names: array[5, 100] of Text[50];
+        Country: Code[10];
+        i: Integer;
+        i2: Integer;
+        i3: Integer;
+    begin
+        if Manual then begin
+            if not UserSetup.Get(UserId()) then begin
+                UserSetup.Validate("User ID", UserId());
+                UserSetup.Insert(true);
+            end;
+            UserSetup."BA Allow Changing Counties" := true;
+            UserSetup."BA Allow Changing Regions" := true;
+            UserSetup.Modify(true);
+        end;
+
+        Countries.Add('CA');
+        Countries.Add('US');
+
+        AddCodeValue(States, 1, i, 'BC');
+        AddCodeValue(States, 1, i, 'AB');
+        AddCodeValue(States, 1, i, 'SK');
+        AddCodeValue(States, 1, i, 'MB');
+        AddCodeValue(States, 1, i, 'ONT');
+        AddCodeValue(States, 1, i, 'ON');
+        AddCodeValue(States, 1, i, 'QC');
+        AddCodeValue(States, 1, i, 'QB');
+        AddCodeValue(States, 1, i, 'NS');
+        AddCodeValue(States, 1, i, 'NB');
+        AddCodeValue(States, 1, i, 'NFL');
+        AddCodeValue(States, 1, i, 'PEI');
+        AddTextValue(Names, 1, i2, 'British Columbia');
+        AddTextValue(Names, 1, i2, 'Alberta');
+        AddTextValue(Names, 1, i2, 'Saskatchewan');
+        AddTextValue(Names, 1, i2, 'Manitoba');
+        AddTextValue(Names, 1, i2, 'Ontario');
+        AddTextValue(Names, 1, i2, 'Ontario');
+        AddTextValue(Names, 1, i2, 'Quebec');
+        AddTextValue(Names, 1, i2, 'Quebec');
+        AddTextValue(Names, 1, i2, 'Nova Scotia');
+        AddTextValue(Names, 1, i2, 'New Brunswick');
+        AddTextValue(Names, 1, i2, 'Newfoundland');
+        AddTextValue(Names, 1, i2, 'Prince Edward Island');
+
+        AddCodeValue(States, 2, i, 'TX');
+        AddCodeValue(States, 2, i, 'CA');
+        AddCodeValue(States, 2, i, 'WA');
+        AddCodeValue(States, 2, i, 'NJ');
+        AddTextValue(Names, 2, i2, 'Texas');
+        AddTextValue(Names, 2, i2, 'California');
+        AddTextValue(Names, 2, i2, 'Washington');
+        AddTextValue(Names, 2, i2, 'New Jersey');
+
+        foreach Country in Countries do begin
+            i3 += 1;
+            for i := 1 to 100 do
+                if States[i3, i] <> '' then
+                    if not ProvState.Get(Country, States[i3, i]) then begin
+                        ProvState.Init();
+                        ProvState.Validate("Country/Region Code", Country);
+                        ProvState.Validate(Symbol, States[i3, i]);
+                        ProvState.Validate(Name, Names[i3, i]);
+                        ProvState."Print Full Name" := true;
+                        ProvState.Insert(true);
+                    end;
+        end;
+
+        if Manual then
+            PopulateProvinceStateFields('');
+    end;
+
+    local procedure AddCodeValue(var CodeArray: array[5, 100] of Code[30]; Index: Integer; var i: Integer; Input: Code[30])
+    begin
+        i += 1;
+        CodeArray[Index, i] := Input;
+    end;
+
+    local procedure AddTextValue(var CodeArray: array[5, 100] of Text[50]; Index: Integer; var i: Integer; Input: Text[50])
+    begin
+        i += 1;
+        CodeArray[Index, i] := Input;
     end;
 }

@@ -45,8 +45,9 @@ table 75014 "BA Region"
     var
         UserSetup: Record "User Setup";
     begin
-        if not UserSetup.Get(UserId()) or not UserSetup."BA Allow Changing Regions" then
-            Error(InvalidPermissionError);
+        if UserId() <> 'SYSTEM' then
+            if not UserSetup.Get(UserId()) or not UserSetup."BA Allow Changing Regions" then
+                Error(InvalidPermissionError);
     end;
 
     var
