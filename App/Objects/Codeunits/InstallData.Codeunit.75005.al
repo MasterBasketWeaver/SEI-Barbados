@@ -4,7 +4,10 @@ codeunit 75005 "BA Install Data"
     Permissions = tabledata "Sales Invoice Header" = m,
     Tabledata "Sales Shipment Header" = m,
     Tabledata "Sales Cr.Memo Header" = m,
-    tabledata "BA Province/State" = rimd;
+    tabledata "BA Province/State" = rimd,
+    tabledata "Purch. Inv. Header" = m,
+    tabledata "Purch. Rcpt. Header" = m,
+    tabledata "Purch. Cr. Memo Hdr." = m;
 
     trigger OnInstallAppPerCompany()
     begin
@@ -21,6 +24,9 @@ codeunit 75005 "BA Install Data"
         SalesInvHeader: Record "Sales Invoice Header";
         SalesShptHeader: Record "Sales Shipment Header";
         SalesCrMemoHeader: Record "Sales Cr.Memo Header";
+        PurchInvHeader: Record "Purch. Inv. Header";
+        PurchRcptHeader: Record "Purch. Rcpt. Header";
+        PurchCrMemoHeader: Record "Purch. Cr. Memo Hdr.";
         Nos: List of [Code[20]];
         RecNo: Code[20];
         ProvinceState: Record "BA Province/State";
@@ -55,35 +61,84 @@ codeunit 75005 "BA Install Data"
         ProvinceState.SetRange("Print Full Name", true);
         if ProvinceState.FindSet() then
             repeat
+                SalesInvHeader.SetRange("Bill-to Country/Region Code", ProvinceState."Country/Region Code");
                 SalesInvHeader.SetRange("Bill-to County", ProvinceState.Symbol);
+                // SalesInvHeader.SetRange("BA Bill-to County Fullname", '');
                 SalesInvHeader.ModifyAll("BA Bill-to County Fullname", ProvinceState.Name);
                 SalesInvHeader.Reset();
+                SalesInvHeader.SetRange("Sell-to Country/Region Code", ProvinceState."Country/Region Code");
                 SalesInvHeader.SetRange("Sell-to County", ProvinceState.Symbol);
                 SalesInvHeader.ModifyAll("BA Sell-to County Fullname", ProvinceState.Name);
                 SalesInvHeader.Reset();
+                SalesInvHeader.SetRange("Ship-to Country/Region Code", ProvinceState."Country/Region Code");
                 SalesInvHeader.SetRange("Ship-to County", ProvinceState.Symbol);
                 SalesInvHeader.ModifyAll("BA Ship-to County Fullname", ProvinceState.Name);
                 SalesInvHeader.Reset();
 
+                SalesCrMemoHeader.SetRange("Bill-to Country/Region Code", ProvinceState."Country/Region Code");
                 SalesCrMemoHeader.SetRange("Bill-to County", ProvinceState.Symbol);
                 SalesCrMemoHeader.ModifyAll("BA Bill-to County Fullname", ProvinceState.Name);
                 SalesCrMemoHeader.Reset();
+                SalesCrMemoHeader.SetRange("Sell-to Country/Region Code", ProvinceState."Country/Region Code");
                 SalesCrMemoHeader.SetRange("Sell-to County", ProvinceState.Symbol);
                 SalesCrMemoHeader.ModifyAll("BA Sell-to County Fullname", ProvinceState.Name);
                 SalesCrMemoHeader.Reset();
+                SalesCrMemoHeader.SetRange("Ship-to Country/Region Code", ProvinceState."Country/Region Code");
                 SalesCrMemoHeader.SetRange("Ship-to County", ProvinceState.Symbol);
                 SalesCrMemoHeader.ModifyAll("BA Ship-to County Fullname", ProvinceState.Name);
                 SalesCrMemoHeader.Reset();
 
+                SalesShptHeader.SetRange("Bill-to Country/Region Code", ProvinceState."Country/Region Code");
                 SalesShptHeader.SetRange("Bill-to County", ProvinceState.Symbol);
                 SalesShptHeader.ModifyAll("BA Bill-to County Fullname", ProvinceState.Name);
                 SalesShptHeader.Reset();
+                SalesShptHeader.SetRange("Sell-to Country/Region Code", ProvinceState."Country/Region Code");
                 SalesShptHeader.SetRange("Sell-to County", ProvinceState.Symbol);
                 SalesShptHeader.ModifyAll("BA Sell-to County Fullname", ProvinceState.Name);
                 SalesShptHeader.Reset();
+                SalesShptHeader.SetRange("Ship-to Country/Region Code", ProvinceState."Country/Region Code");
                 SalesShptHeader.SetRange("Ship-to County", ProvinceState.Symbol);
                 SalesShptHeader.ModifyAll("BA Ship-to County Fullname", ProvinceState.Name);
                 SalesShptHeader.Reset();
+
+                PurchInvHeader.SetRange("Buy-from Country/Region Code", ProvinceState."Country/Region Code");
+                PurchInvHeader.SetRange("Buy-from County", ProvinceState.Symbol);
+                PurchInvHeader.ModifyAll("BA Buy-from County Fullname", ProvinceState.Name);
+                PurchInvHeader.Reset();
+                PurchInvHeader.SetRange("Pay-to Country/Region Code", ProvinceState."Country/Region Code");
+                PurchInvHeader.SetRange("Pay-to County", ProvinceState.Symbol);
+                PurchInvHeader.ModifyAll("BA Pay-to County Fullname", ProvinceState.Name);
+                PurchInvHeader.Reset();
+                PurchInvHeader.SetRange("Ship-to Country/Region Code", ProvinceState."Country/Region Code");
+                PurchInvHeader.SetRange("Ship-to County", ProvinceState.Symbol);
+                PurchInvHeader.ModifyAll("BA Ship-to County Fullname", ProvinceState.Name);
+                PurchInvHeader.Reset();
+
+                PurchCrMemoHeader.SetRange("Buy-from Country/Region Code", ProvinceState."Country/Region Code");
+                PurchCrMemoHeader.SetRange("Buy-from County", ProvinceState.Symbol);
+                PurchCrMemoHeader.ModifyAll("BA Buy-from County Fullname", ProvinceState.Name);
+                PurchCrMemoHeader.Reset();
+                PurchCrMemoHeader.SetRange("Pay-to Country/Region Code", ProvinceState."Country/Region Code");
+                PurchCrMemoHeader.SetRange("Pay-to County", ProvinceState.Symbol);
+                PurchCrMemoHeader.ModifyAll("BA Pay-to County Fullname", ProvinceState.Name);
+                PurchCrMemoHeader.Reset();
+                PurchCrMemoHeader.SetRange("Ship-to Country/Region Code", ProvinceState."Country/Region Code");
+                PurchCrMemoHeader.SetRange("Ship-to County", ProvinceState.Symbol);
+                PurchCrMemoHeader.ModifyAll("BA Ship-to County Fullname", ProvinceState.Name);
+                PurchCrMemoHeader.Reset();
+
+                PurchRcptHeader.SetRange("Buy-from Country/Region Code", ProvinceState."Country/Region Code");
+                PurchRcptHeader.SetRange("Buy-from County", ProvinceState.Symbol);
+                PurchRcptHeader.ModifyAll("BA Buy-from County Fullname", ProvinceState.Name);
+                PurchRcptHeader.Reset();
+                PurchRcptHeader.SetRange("Pay-to Country/Region Code", ProvinceState."Country/Region Code");
+                PurchRcptHeader.SetRange("Pay-to County", ProvinceState.Symbol);
+                PurchRcptHeader.ModifyAll("BA Pay-to County Fullname", ProvinceState.Name);
+                PurchRcptHeader.Reset();
+                PurchRcptHeader.SetRange("Ship-to Country/Region Code", ProvinceState."Country/Region Code");
+                PurchRcptHeader.SetRange("Ship-to County", ProvinceState.Symbol);
+                PurchRcptHeader.ModifyAll("BA Ship-to County Fullname", ProvinceState.Name);
+                PurchRcptHeader.Reset();
             until ProvinceState.Next() = 0;
     end;
 
