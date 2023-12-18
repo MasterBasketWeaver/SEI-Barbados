@@ -1,4 +1,4 @@
-pageextension 80009 "BA Sales Order List" extends "Sales Order List"
+pageextension 80012 "BA Posted Sales Invoices" extends "Posted Sales Invoices"
 {
     layout
     {
