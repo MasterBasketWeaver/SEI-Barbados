@@ -21,11 +21,21 @@ codeunit 75005 "BA Install Data"
     local procedure PopulateItemCreatedDates()
     var
         Item: Record Item;
+        Items: List of [Code[20]];
+        ItemNo: Code[20];
     begin
         Item.SetRange("BA Created By", '');
-        Item.ModifyAll("BA Created By", 'SYSTEM');
-        Item.Reset();
         Item.SetRange("BA Created At", 0D);
-        Item.ModifyAll("BA Created At", Today());
+        if Item.FindSet() then
+            repeat
+                Items.Add(Item."No.");
+            until Item.Next() = 0;
+
+        foreach ItemNo in Items do begin
+            Item.Get(ItemNo);
+            Item."BA Created By" := 'SYSTEM';
+            Item."BA Created At" := Today();
+            Item.Modify(false);
+        end;
     end;
 }

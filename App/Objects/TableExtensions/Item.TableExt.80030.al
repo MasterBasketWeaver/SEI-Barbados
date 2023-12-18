@@ -20,5 +20,6 @@ tableextension 80030 "BA Item" extends Item
     begin
         Rec."BA Created By" := UserId();
         Rec."BA Created At" := Today();
+        Rec.Modify(false);
     end;
 }
