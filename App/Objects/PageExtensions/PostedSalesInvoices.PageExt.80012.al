@@ -11,10 +11,12 @@ pageextension 80012 "BA Posted Sales Invoices" extends "Posted Sales Invoices"
             field("Sell-to County"; Rec."Sell-to County")
             {
                 ApplicationArea = all;
+                Caption = 'Sell-to State';
             }
             field("Ship-to County"; Rec."Ship-to County")
             {
                 ApplicationArea = all;
+                Caption = 'Ship-to State';
             }
             field("User ID"; Rec."User ID")
             {
