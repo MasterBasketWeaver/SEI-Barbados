@@ -4,10 +4,9 @@ pageextension 80041 "BA Item Card" extends "Item Card"
     {
         addlast(Item)
         {
-            field(SystemCreatedAt; Rec.SystemCreatedAt)
+            field("BA Created At"; Rec."BA Created At")
             {
                 ApplicationArea = all;
-                Caption = 'Created Date';
             }
             field("BA Created By"; Rec."BA Created By")
             {
