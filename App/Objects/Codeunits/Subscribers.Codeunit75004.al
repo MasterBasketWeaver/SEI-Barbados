@@ -33,6 +33,13 @@ codeunit 75004 "BA Subscibers"
         SalesInvHeader."BA Ship-to Name" := SalesInvHeader."Ship-to Name";
     end;
 
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnAfterInsertEvent', '', false, false)]
+    local procedure PurchaseHeaderOnAfterInsertEvent(var Rec: Record "Purchase Header")
+    begin
+        if Rec."Document Type" in [Rec."Document Type"::Order, Rec."Document Type"::Invoice] then
+            Rec."Assigned User ID" := UserId();
+    end;
+
 
     var
         NoCommissionErr: Label '%1 %2 on line %3 requires a %4.';
