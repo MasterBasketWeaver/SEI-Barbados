@@ -26,7 +26,7 @@
             "type": "al",
             "environmentType": "OnPrem",
             "server": "http://localhost",
-            "serverInstance": "Test",
+            "serverInstance": "Dev",
             "authentication": "UserPassword",
             "startupObjectId": 22,
             "startupObjectType": "Page",

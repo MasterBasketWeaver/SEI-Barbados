@@ -42,5 +42,16 @@ pageextension 80014 "BA Vendor Card" extends "Vendor Card"
             Enabled = false;
             Editable = false;
         }
+        addlast(General)
+        {
+            field("BA Created At"; Rec."BA Created At")
+            {
+                ApplicationArea = all;
+            }
+            field("BA Created By"; Rec."BA Created By")
+            {
+                ApplicationArea = all;
+            }
+        }
     }
 }

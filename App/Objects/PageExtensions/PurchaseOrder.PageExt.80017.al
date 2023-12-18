@@ -2,6 +2,11 @@ pageextension 80017 "BA Purchase Order" extends "Purchase Order"
 {
     layout
     {
+        modify("Assigned User ID")
+        {
+            ApplicationArea = all;
+            Editable = false;
+        }
         modify("Buy-from Country/Region Code")
         {
             ApplicationArea = all;
@@ -220,4 +225,5 @@ pageextension 80017 "BA Purchase Order" extends "Purchase Order"
         ShipToState := Rec."Ship-to County";
         IsEditable := CurrPage.Editable();
     end;
+
 }

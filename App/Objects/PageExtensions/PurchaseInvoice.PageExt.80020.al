@@ -195,6 +195,11 @@ pageextension 80020 "BA Purchase Invoice" extends "Purchase Invoice"
                 end;
             }
         }
+        modify("Assigned User ID")
+        {
+            ApplicationArea = all;
+            Editable = false;
+        }
     }
 
     var
