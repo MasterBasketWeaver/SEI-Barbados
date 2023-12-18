@@ -13,6 +13,10 @@ pageextension 80040 "BA Item List" extends "Item List"
             {
                 ApplicationArea = all;
             }
+            field("Omit from Data Sync"; Rec."Omit from Data Sync")
+            {
+                ApplicationArea = all;
+            }
         }
     }
 }
