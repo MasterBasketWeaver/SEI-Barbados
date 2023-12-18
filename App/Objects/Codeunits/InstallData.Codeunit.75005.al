@@ -15,6 +15,8 @@ codeunit 75005 "BA Install Data"
         // PopulateFields();
         PopulateStates(false);
         PopulateProvinceStateFields('');
+        PopulateItemCreatedDates();
+        PopulateVendorCreatedDates();
     end;
 
 
