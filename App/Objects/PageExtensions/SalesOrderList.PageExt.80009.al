@@ -22,10 +22,12 @@ pageextension 80009 "BA Sales Order List" extends "Sales Order List"
             field("Sell-to County"; Rec."Sell-to County")
             {
                 ApplicationArea = all;
+                Caption = 'Sell-to State';
             }
             field("Ship-to County"; Rec."Ship-to County")
             {
                 ApplicationArea = all;
+                Caption = 'Ship-to State';
             }
         }
     }
