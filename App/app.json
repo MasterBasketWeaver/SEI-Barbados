@@ -10,7 +10,14 @@
   "help": "",
   "url": "",
   "logo": "",
-  "dependencies": [],
+  "dependencies": [
+    {
+      "appId": "67e6cf25-4000-4d18-bbf1-e27b7bd55e51",
+      "name": "SEI Customizations",
+      "publisher": "Catapult ERP",
+      "version": "1.0.0.0"
+    }
+  ],
   "screenshots": [],
   "platform": "11.0.0.0",
   "application": "13.0.0.0",
