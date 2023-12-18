@@ -16,6 +16,7 @@ codeunit 75005 "BA Install Data"
         // PopulateStates(false);
         // PopulateProvinceStateFields('');
         PopulateItemCreatedDates();
+        PopulateVendorCreatedDates();
     end;
 
     local procedure PopulateItemCreatedDates()
@@ -36,6 +37,27 @@ codeunit 75005 "BA Install Data"
             Item."BA Created By" := 'SYSTEM';
             Item."BA Created At" := Today();
             Item.Modify(false);
+        end;
+    end;
+
+    local procedure PopulateVendorCreatedDates()
+    var
+        Vendor: Record Vendor;
+        Vendors: List of [Code[20]];
+        VendorNo: Code[20];
+    begin
+        Vendor.SetRange("BA Created By", '');
+        Vendor.SetRange("BA Created At", 0D);
+        if Vendor.FindSet() then
+            repeat
+                Vendors.Add(Vendor."No.");
+            until Vendor.Next() = 0;
+
+        foreach VendorNo in Vendors do begin
+            Vendor.Get(VendorNo);
+            Vendor."BA Created By" := 'SYSTEM';
+            Vendor."BA Created At" := Today();
+            Vendor.Modify(false);
         end;
     end;
 }
