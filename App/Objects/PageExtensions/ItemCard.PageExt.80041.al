@@ -13,5 +13,16 @@ pageextension 80041 "BA Item Card" extends "Item Card"
                 ApplicationArea = all;
             }
         }
+        addafter("Qty. on Asm. Component")
+        {
+            field("BA Qty. on Sales Quote"; Rec."BA Qty. on Sales Quote")
+            {
+                ApplicationArea = all;
+            }
+            field("BA Qty. on Closed Sales Quote"; Rec."BA Qty. on Closed Sales Quote")
+            {
+                ApplicationArea = all;
+            }
+        }
     }
 }

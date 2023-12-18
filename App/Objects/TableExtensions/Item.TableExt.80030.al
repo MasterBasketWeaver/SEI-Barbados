@@ -24,7 +24,6 @@ tableextension 80030 "BA Item" extends Item
                 "Shortcut Dimension 1 Code" = Field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = Field("Global Dimension 2 Filter"),
                 "Location Code" = Field("Location Filter"), "Drop Shipment" = Field("Drop Shipment Filter"), "Variant Code" = Field("Variant Filter"),
                 "Shipment Date" = Field("Date Filter"), "BA Stage" = const(Open)));
-            AccessByPermission = TableData "Sales Shipment Header" = R;
             DecimalPlaces = 0 : 5;
         }
         field(80011; "BA Qty. on Closed Sales Quote"; Decimal)
@@ -37,7 +36,6 @@ tableextension 80030 "BA Item" extends Item
                 "Shortcut Dimension 1 Code" = Field("Global Dimension 1 Filter"), "Shortcut Dimension 2 Code" = Field("Global Dimension 2 Filter"),
                 "Location Code" = Field("Location Filter"), "Drop Shipment" = Field("Drop Shipment Filter"), "Variant Code" = Field("Variant Filter"),
                 "Shipment Date" = Field("Date Filter"), "BA Stage" = Filter(Archive | "Closed/Lost" | "Closed/Other")));
-            AccessByPermission = TableData "Sales Shipment Header" = R;
             DecimalPlaces = 0 : 5;
         }
     }
