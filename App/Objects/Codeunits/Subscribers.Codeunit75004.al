@@ -42,6 +42,24 @@ codeunit 75004 "BA Subscibers"
         end;
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::CaptionManagement, 'OnAfterCaptionClassTranslate', '', false, false)]
+    local procedure CaptionMgtOnAfterCaptionClassTranslate(var Caption: Text[1024]; CaptionExpression: Text[1024])
+    var
+        Parts: List of [Text];
+        s: Text;
+    begin
+        if not CaptionExpression.Contains('80000') or not CaptionExpression.Contains(',') then
+            exit;
+        Parts := CaptionExpression.Split(',');
+        Parts.Get(2, s);
+        case s of
+            '1':
+                Caption := 'Sell-to State';
+            '2':
+                Caption := 'Ship-to State';
+        end;
+    end;
+
 
     var
         NoCommissionErr: Label '%1 %2 on line %3 requires a %4.';
