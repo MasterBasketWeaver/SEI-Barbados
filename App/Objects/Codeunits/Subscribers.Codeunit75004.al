@@ -36,8 +36,10 @@ codeunit 75004 "BA Subscibers"
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnAfterInsertEvent', '', false, false)]
     local procedure PurchaseHeaderOnAfterInsertEvent(var Rec: Record "Purchase Header")
     begin
-        if Rec."Document Type" in [Rec."Document Type"::Order, Rec."Document Type"::Invoice] then
+        if Rec."Document Type" in [Rec."Document Type"::Order, Rec."Document Type"::Invoice] then begin
             Rec."Assigned User ID" := UserId();
+            Rec.Modify(true);
+        end;
     end;
 
 
