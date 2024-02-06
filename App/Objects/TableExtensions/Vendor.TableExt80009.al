@@ -42,7 +42,7 @@ tableextension 80009 "BA Vendor" extends Vendor
         field(80020; "BA Created At"; Date)
         {
             DataClassification = CustomerContent;
-            Caption = 'Created At';
+            Caption = 'Created On';
             Editable = false;
         }
         field(80021; "BA Created By"; Code[50])

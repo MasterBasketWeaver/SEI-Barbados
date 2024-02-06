@@ -5,7 +5,7 @@ tableextension 80030 "BA Item" extends Item
         field(80000; "BA Created At"; Date)
         {
             DataClassification = CustomerContent;
-            Caption = 'Created At';
+            Caption = 'Created On';
             Editable = false;
         }
         field(80001; "BA Created By"; Code[50])
