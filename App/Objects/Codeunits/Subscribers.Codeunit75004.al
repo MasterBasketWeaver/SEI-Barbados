@@ -50,6 +50,13 @@ codeunit 75004 "BA Subscibers"
         end;
     end;
 
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterValidateEvent', 'Document Date', false, false)]
+    local procedure SalesHeaderOnAfterValidateDocumentDate(var Rec: Record "Sales Header")
+    begin
+        if Rec."Document Type" = Rec."Document Type"::Quote then
+            Rec.Validate("BA Quote Date", Rec."Document Date");
+    end;
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Quote to Order", 'OnAfterOnRun', '', false, false)]
     local procedure SalesQuoteToOrderOnAfterOnRun(var SalesOrderHeader: Record "Sales Header")
     begin
@@ -58,6 +65,17 @@ codeunit 75004 "BA Subscibers"
         SalesOrderHeader.Validate("Order Date", Today());
         SalesOrderHeader.Validate("Shipment Date", 0D);
         SalesOrderHeader.Modify(true);
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Sales Line", 'OnAfterValidateEvent', 'No.', false, false)]
+    local procedure SalesLineOnAfterValidateNo(var Rec: Record "Sales Line"; var xRec: Record "Sales Line")
+    var
+        SalesHeader: Record "Sales Header";
+    begin
+        if (Rec."Document Type" = Rec."Document Type"::Order) and (Rec."No." <> xRec."No.") and SalesHeader.Get(Rec."Document Type", Rec."Document No.") and (SalesHeader."Quote No." = '') then begin
+            Rec.SetHideValidationDialog(true);
+            Rec.Validate("Shipment Date", 0D);
+        end;
     end;
 
     var
