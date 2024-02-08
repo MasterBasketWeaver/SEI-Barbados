@@ -8,6 +8,10 @@ pageextension 80011 "BA Posted Sales Invoice" extends "Posted Sales Invoice"
             {
                 ApplicationArea = all;
             }
+            field("Order Date"; Rec."Order Date")
+            {
+                ApplicationArea = all;
+            }
         }
     }
 }
