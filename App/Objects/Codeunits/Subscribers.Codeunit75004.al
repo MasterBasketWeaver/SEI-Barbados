@@ -543,10 +543,12 @@ codeunit 75004 "BA Subscibers"
     var
         SalesHeader: Record "Sales Header";
     begin
-        if (Rec."Document Type" = Rec."Document Type"::Order) and (xRec."Shipment Date" = 0D) and (Rec."Shipment Date" <> 0D) and SalesHeader.Get(Rec."Document Type", Rec."Document No.") and (SalesHeader."Quote No." = '') then begin
-            Rec.SetHideValidationDialog(true);
-            Rec.Validate("Shipment Date", 0D);
-        end;
+        if (Rec."Document Type" <> Rec."Document Type"::Order) or (xRec."Shipment Date" <> 0D) or (Rec."Shipment Date" = 0D)
+                or not SalesHeader.Get(Rec."Document Type", Rec."Document No.") or (SalesHeader."Quote No." <> '')
+                or (CurrFieldNo = Rec.FieldNo("Shipment Date")) then
+            exit;
+        Rec.SetHideValidationDialog(true);
+        Rec.Validate("Shipment Date", 0D);
     end;
 
     var
