@@ -67,12 +67,12 @@ codeunit 75004 "BA Subscibers"
         SalesOrderHeader.Modify(true);
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::"Sales Line", 'OnAfterValidateEvent', 'No.', false, false)]
-    local procedure SalesLineOnAfterValidateNo(var Rec: Record "Sales Line"; var xRec: Record "Sales Line")
+    [EventSubscriber(ObjectType::Table, Database::"Sales Line", 'OnAfterValidateEvent', 'Shipment Date', false, false)]
+    local procedure SalesLineOnAfterValidateNo(var Rec: Record "Sales Line"; var xRec: Record "Sales Line"; CurrFieldNo: Integer)
     var
         SalesHeader: Record "Sales Header";
     begin
-        if (Rec."Document Type" = Rec."Document Type"::Order) and (Rec."No." <> xRec."No.") and SalesHeader.Get(Rec."Document Type", Rec."Document No.") and (SalesHeader."Quote No." = '') then begin
+        if (Rec."Document Type" = Rec."Document Type"::Order) and (xRec."Shipment Date" = 0D) and (Rec."Shipment Date" <> 0D) and SalesHeader.Get(Rec."Document Type", Rec."Document No.") and (SalesHeader."Quote No." = '') then begin
             Rec.SetHideValidationDialog(true);
             Rec.Validate("Shipment Date", 0D);
         end;
