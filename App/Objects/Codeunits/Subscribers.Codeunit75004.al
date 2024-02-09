@@ -50,12 +50,12 @@ codeunit 75004 "BA Subscibers"
         end;
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterValidateEvent', 'Document Date', false, false)]
-    local procedure SalesHeaderOnAfterValidateDocumentDate(var Rec: Record "Sales Header")
-    begin
-        if Rec."Document Type" = Rec."Document Type"::Quote then
-            Rec.Validate("BA Quote Date", Rec."Document Date");
-    end;
+    // [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterValidateEvent', 'Document Date', false, false)]
+    // local procedure SalesHeaderOnAfterValidateDocumentDate(var Rec: Record "Sales Header")
+    // begin
+    //     if Rec."Document Type" = Rec."Document Type"::Quote then
+    //         Rec.Validate("BA Quote Date", Rec."Document Date");
+    // end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Quote to Order", 'OnAfterOnRun', '', false, false)]
     local procedure SalesQuoteToOrderOnAfterOnRun(var SalesOrderHeader: Record "Sales Header")
