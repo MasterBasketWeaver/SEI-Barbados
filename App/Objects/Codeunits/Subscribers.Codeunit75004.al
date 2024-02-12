@@ -80,6 +80,19 @@ codeunit 75004 "BA Subscibers"
         Rec.Validate("Shipment Date", 0D);
     end;
 
+    [EventSubscriber(ObjectType::Report, Report::"ENC Sales Order", 'OnAfterSetSalesHeaderQuoteDate', '', false, false)]
+    local procedure SalesOrderOnAfterSetSalesHeaderQuoteDate(var QuoteDate: Date; RecID: RecordId)
+    var
+        SalesHeader: Record "Sales Header";
+    begin
+        if not SalesHeader.Get(RecID) then
+            exit;
+        if SalesHeader."Document Type" = SalesHeader."Document Type"::Quote then
+            QuoteDate := SalesHeader."BA Quote Date"
+        else
+            QuoteDate := SalesHeader."Order Date";
+    end;
+
     var
         NoCommissionErr: Label '%1 %2 on line %3 requires a %4.';
 }
