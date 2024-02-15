@@ -33,6 +33,33 @@ codeunit 75004 "BA Subscibers"
         SalesInvHeader."BA Ship-to Name" := SalesInvHeader."Ship-to Name";
     end;
 
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnAfterInsertEvent', '', false, false)]
+    local procedure PurchaseHeaderOnAfterInsertEvent(var Rec: Record "Purchase Header")
+    begin
+        if Rec."Document Type" in [Rec."Document Type"::Order, Rec."Document Type"::Invoice] then begin
+            Rec."Assigned User ID" := UserId();
+            Rec.Modify(true);
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::CaptionManagement, 'OnAfterCaptionClassTranslate', '', false, false)]
+    local procedure CaptionMgtOnAfterCaptionClassTranslate(var Caption: Text[1024]; CaptionExpression: Text[1024])
+    var
+        Parts: List of [Text];
+        s: Text;
+    begin
+        if not CaptionExpression.Contains('80000') or not CaptionExpression.Contains(',') then
+            exit;
+        Parts := CaptionExpression.Split(',');
+        Parts.Get(2, s);
+        case s of
+            '1':
+                Caption := 'Sell-to State';
+            '2':
+                Caption := 'Ship-to State';
+        end;
+    end;
+
 
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterInitRecord', '', false, false)]
     local procedure SalesHeaderOnAfterInitRecord(var SalesHeader: Record "Sales Header")
