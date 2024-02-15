@@ -1,47 +1,33 @@
-pageextension 80007 "BA Sales Order" extends "Sales Order"
+pageextension 80022 "BA Purchase Return Order" extends "Purchase Return Order"
 {
     layout
     {
-        modify("Order Date")
-        {
-            ApplicationArea = all;
-            Editable = false;
-        }
-        addafter("Document Date")
-        {
-            field("BA Quote Date"; Rec."BA Quote Date")
-            {
-                ApplicationArea = all;
-            }
-        }
-        modify("Sell-to Country/Region Code")
+        modify("Buy-from Country/Region Code")
         {
             ApplicationArea = all;
             Visible = false;
             Enabled = false;
         }
-        addfirst("Sell-to")
+        addfirst("Buy-from")
         {
-            field("BA Sell-to Country/Region Code"; Rec."Sell-to Country/Region Code")
+            field("BA Buy-from Country/Region Code"; Rec."Buy-from Country/Region Code")
             {
                 ApplicationArea = all;
                 Caption = 'Country';
-                Editable = false;
             }
         }
-        modify("Bill-to Country/Region Code")
+        modify("Pay-to Country/Region Code")
         {
             ApplicationArea = all;
             Visible = false;
             Enabled = false;
         }
-        addbefore("Bill-to Name")
+        addbefore("Pay-to Name")
         {
-            field("BA Bill-to Country/Region Code"; Rec."Bill-to Country/Region Code")
+            field("BA Pay-to Country/Region Code"; Rec."Pay-to Country/Region Code")
             {
                 ApplicationArea = all;
                 Caption = 'Country';
-                Editable = false;
             }
         }
         modify("Ship-to Country/Region Code")
@@ -56,38 +42,38 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
             {
                 ApplicationArea = all;
                 Caption = 'Country';
-                Editable = false;
             }
         }
-        modify("Sell-to County")
+
+
+        modify("Pay-to County")
         {
             ApplicationArea = all;
             Visible = false;
             Editable = false;
             Enabled = false;
         }
-        addafter("Sell-to County")
+        addafter("Pay-to County")
         {
-            field("BA Sell-to County"; SellToState)
+            field("BA Pay-to County"; PayToState)
             {
                 ApplicationArea = all;
-                Caption = 'Sell-to County';
-                CaptionClass = '5,1,' + Rec."Sell-to Country/Region Code";
-                TableRelation = "BA Province/State".Symbol where("Country/Region Code" = field("Sell-to Country/Region Code"));
+                Caption = 'Pay-to County';
+                CaptionClass = '5,1,' + Rec."Pay-to Country/Region Code";
+                TableRelation = "BA Province/State".Symbol where("Country/Region Code" = field("Pay-to Country/Region Code"));
                 Editable = IsEditable;
 
                 trigger OnValidate()
                 begin
-                    Rec."Sell-to County" := SellToState;
-                    Rec.CalcFields("BA Sell-to County Fullname");
+                    Rec."Pay-to County" := PayToState;
+                    Rec.CalcFields("BA Pay-to County Fullname");
                 end;
             }
-            field("BA Sell-to County Fullname"; Rec."BA Sell-to County Fullname")
+            field("BA Pay-to County Fullname"; Rec."BA Pay-to County Fullname")
             {
                 ApplicationArea = all;
             }
         }
-
         modify("Ship-to County")
         {
             ApplicationArea = all;
@@ -116,7 +102,7 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
                 ApplicationArea = all;
             }
         }
-        modify("Bill-to County")
+        modify("Buy-from County")
         {
             ApplicationArea = all;
             Visible = false;
@@ -124,37 +110,37 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
             Enabled = false;
             Caption = 'herp derp';
         }
-        addafter("Bill-to County")
+        addafter("Buy-from County")
         {
-            field("BA Bill-to County"; BillToState)
+            field("BA Buy-from County"; BuyFromState)
             {
                 ApplicationArea = all;
-                Caption = 'Bill-to County';
-                CaptionClass = '5,1,' + Rec."Bill-to Country/Region Code";
-                TableRelation = "BA Province/State".Symbol where("Country/Region Code" = field("Bill-to Country/Region Code"));
+                Caption = 'Buy-from County';
+                CaptionClass = '5,1,' + Rec."Buy-from Country/Region Code";
+                TableRelation = "BA Province/State".Symbol where("Country/Region Code" = field("Buy-from Country/Region Code"));
                 Editable = IsEditable;
 
                 trigger OnValidate()
                 begin
-                    Rec."Bill-to County" := BillToState;
-                    Rec.CalcFields("BA Bill-to County Fullname");
+                    Rec."Buy-from County" := BuyFromState;
+                    Rec.CalcFields("BA Buy-from County Fullname");
                 end;
             }
-            field("BA Bill-to County Fullname"; Rec."BA Bill-to County Fullname")
+            field("BA Buy-from County Fullname"; Rec."BA Buy-from County Fullname")
             {
                 ApplicationArea = all;
             }
         }
-        modify("Bill-to City")
+        modify("Buy-from City")
         {
             ApplicationArea = all;
             Visible = false;
             Editable = false;
             Enabled = false;
         }
-        addafter("Bill-to City")
+        addafter("Buy-from City")
         {
-            field("BA Bill-to City"; BillToCity)
+            field("BA Buy-from City"; BuyFromCity)
             {
                 ApplicationArea = all;
                 Caption = 'City';
@@ -162,7 +148,7 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
 
                 trigger OnValidate()
                 begin
-                    Rec."Bill-to City" := BillToCity;
+                    Rec."Buy-from City" := BuyFromCity;
                 end;
             }
         }
@@ -187,16 +173,16 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
                 end;
             }
         }
-        modify("Sell-to City")
+        modify("Pay-to City")
         {
             ApplicationArea = all;
             Visible = false;
             Editable = false;
             Enabled = false;
         }
-        addafter("Sell-to City")
+        addafter("Pay-to City")
         {
-            field("BA Sell-to City"; SellToCity)
+            field("BA Pay-to City"; PayToCity)
             {
                 ApplicationArea = all;
                 Caption = 'City';
@@ -204,29 +190,30 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
 
                 trigger OnValidate()
                 begin
-                    Rec."Sell-to City" := SellToCity;
+                    Rec."Pay-to City" := PayToCity;
                 end;
             }
         }
     }
 
+
     var
-        BillToState: Code[30];
+        BuyFromState: Code[30];
         ShipToState: Code[30];
-        SellToState: Code[30];
-        BillToCity: Text[30];
+        PayToState: Code[30];
+        BuyFromCity: Text[30];
         ShipToCity: Text[30];
-        SellToCity: Text[30];
+        PayToCity: Text[30];
         [InDataSet]
         IsEditable: boolean;
 
     trigger OnAfterGetCurrRecord()
     begin
-        BillToCity := Rec."Bill-to City";
-        SellToCity := Rec."Sell-to City";
+        BuyFromCity := Rec."Buy-from City";
+        PayToCity := Rec."Pay-to City";
         ShipToCity := Rec."Ship-to City";
-        BillToState := Rec."Bill-to County";
-        SellToState := Rec."Sell-to County";
+        BuyFromState := Rec."Buy-from County";
+        PayToState := Rec."Pay-to County";
         ShipToState := Rec."Ship-to County";
         IsEditable := CurrPage.Editable();
     end;

@@ -1,18 +1,7 @@
-pageextension 80011 "BA Posted Sales Invoice" extends "Posted Sales Invoice"
+pageextension 80027 "BA Posted Sales Cr.Memo" extends "Posted Sales Credit Memo"
 {
     layout
     {
-        addafter("Document Date")
-        {
-            field("BA Quote Date"; Rec."BA Quote Date")
-            {
-                ApplicationArea = all;
-            }
-            field("Order Date"; Rec."Order Date")
-            {
-                ApplicationArea = all;
-            }
-        }
         modify("Sell-to Country/Region Code")
         {
             ApplicationArea = all;
@@ -43,6 +32,7 @@ pageextension 80011 "BA Posted Sales Invoice" extends "Posted Sales Invoice"
                 Editable = false;
             }
         }
+
         modify("Ship-to Country/Region Code")
         {
             ApplicationArea = all;
@@ -65,15 +55,6 @@ pageextension 80011 "BA Posted Sales Invoice" extends "Posted Sales Invoice"
                 ApplicationArea = all;
             }
         }
-        addlast(General)
-        {
-            field("User ID"; Rec."User ID")
-            {
-                ApplicationArea = all;
-                Editable = false;
-            }
-        }
-
         addafter("Ship-to County")
         {
             field("BA Ship-to County Fullname"; Rec."BA Ship-to County Fullname")
@@ -86,6 +67,14 @@ pageextension 80011 "BA Posted Sales Invoice" extends "Posted Sales Invoice"
             field("BA Bill-to County Fullname"; Rec."BA Bill-to County Fullname")
             {
                 ApplicationArea = all;
+            }
+        }
+        addlast(General)
+        {
+            field("User ID"; Rec."User ID")
+            {
+                ApplicationArea = all;
+                Editable = false;
             }
         }
     }

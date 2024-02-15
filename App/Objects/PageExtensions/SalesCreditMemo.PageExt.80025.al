@@ -1,19 +1,7 @@
-pageextension 80007 "BA Sales Order" extends "Sales Order"
+pageextension 80025 "BA Sales Credit Memo" extends "Sales Credit Memo"
 {
     layout
     {
-        modify("Order Date")
-        {
-            ApplicationArea = all;
-            Editable = false;
-        }
-        addafter("Document Date")
-        {
-            field("BA Quote Date"; Rec."BA Quote Date")
-            {
-                ApplicationArea = all;
-            }
-        }
         modify("Sell-to Country/Region Code")
         {
             ApplicationArea = all;
@@ -44,21 +32,6 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
                 Editable = false;
             }
         }
-        modify("Ship-to Country/Region Code")
-        {
-            ApplicationArea = all;
-            Visible = false;
-            Enabled = false;
-        }
-        addbefore("Ship-to Name")
-        {
-            field("BA Ship-to Country/Region Code"; Rec."Ship-to Country/Region Code")
-            {
-                ApplicationArea = all;
-                Caption = 'Country';
-                Editable = false;
-            }
-        }
         modify("Sell-to County")
         {
             ApplicationArea = all;
@@ -83,35 +56,6 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
                 end;
             }
             field("BA Sell-to County Fullname"; Rec."BA Sell-to County Fullname")
-            {
-                ApplicationArea = all;
-            }
-        }
-
-        modify("Ship-to County")
-        {
-            ApplicationArea = all;
-            Visible = false;
-            Editable = false;
-            Enabled = false;
-        }
-        addafter("Ship-to County")
-        {
-            field("BA Ship-to County"; ShipToState)
-            {
-                ApplicationArea = all;
-                Caption = 'Ship-to County';
-                CaptionClass = '5,1,' + Rec."Ship-to Country/Region Code";
-                TableRelation = "BA Province/State".Symbol where("Country/Region Code" = field("Ship-to Country/Region Code"));
-                Editable = IsEditable;
-
-                trigger OnValidate()
-                begin
-                    Rec."Ship-to County" := ShipToState;
-                    Rec.CalcFields("BA Ship-to County Fullname");
-                end;
-            }
-            field("BA Ship-to County Fullname"; Rec."BA Ship-to County Fullname")
             {
                 ApplicationArea = all;
             }
@@ -166,27 +110,6 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
                 end;
             }
         }
-        modify("Ship-to City")
-        {
-            ApplicationArea = all;
-            Visible = false;
-            Editable = false;
-            Enabled = false;
-        }
-        addafter("Ship-to City")
-        {
-            field("BA Ship-to City"; ShipToCity)
-            {
-                ApplicationArea = all;
-                Caption = 'City';
-                Editable = IsEditable;
-
-                trigger OnValidate()
-                begin
-                    Rec."Ship-to City" := ShipToCity;
-                end;
-            }
-        }
         modify("Sell-to City")
         {
             ApplicationArea = all;
@@ -212,10 +135,8 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
 
     var
         BillToState: Code[30];
-        ShipToState: Code[30];
         SellToState: Code[30];
         BillToCity: Text[30];
-        ShipToCity: Text[30];
         SellToCity: Text[30];
         [InDataSet]
         IsEditable: boolean;
@@ -224,10 +145,8 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
     begin
         BillToCity := Rec."Bill-to City";
         SellToCity := Rec."Sell-to City";
-        ShipToCity := Rec."Ship-to City";
         BillToState := Rec."Bill-to County";
         SellToState := Rec."Sell-to County";
-        ShipToState := Rec."Ship-to County";
         IsEditable := CurrPage.Editable();
     end;
 }

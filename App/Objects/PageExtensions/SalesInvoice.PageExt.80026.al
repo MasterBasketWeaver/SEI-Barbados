@@ -1,19 +1,7 @@
-pageextension 80007 "BA Sales Order" extends "Sales Order"
+pageextension 80026 "BA Sales Invoice" extends "Sales Invoice"
 {
     layout
     {
-        modify("Order Date")
-        {
-            ApplicationArea = all;
-            Editable = false;
-        }
-        addafter("Document Date")
-        {
-            field("BA Quote Date"; Rec."BA Quote Date")
-            {
-                ApplicationArea = all;
-            }
-        }
         modify("Sell-to Country/Region Code")
         {
             ApplicationArea = all;
@@ -87,7 +75,6 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
                 ApplicationArea = all;
             }
         }
-
         modify("Ship-to County")
         {
             ApplicationArea = all;

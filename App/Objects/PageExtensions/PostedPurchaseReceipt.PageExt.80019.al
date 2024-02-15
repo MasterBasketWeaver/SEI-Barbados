@@ -1,42 +1,31 @@
-pageextension 80011 "BA Posted Sales Invoice" extends "Posted Sales Invoice"
+pageextension 80018 "BA Posted Purchase Invoice" extends "Posted Purchase Invoice"
 {
     layout
     {
-        addafter("Document Date")
-        {
-            field("BA Quote Date"; Rec."BA Quote Date")
-            {
-                ApplicationArea = all;
-            }
-            field("Order Date"; Rec."Order Date")
-            {
-                ApplicationArea = all;
-            }
-        }
-        modify("Sell-to Country/Region Code")
+        modify("Buy-from Country/Region Code")
         {
             ApplicationArea = all;
             Visible = false;
             Enabled = false;
         }
-        addfirst("Sell-to")
+        addfirst("Buy-from")
         {
-            field("BA Sell-to Country/Region Code"; Rec."Sell-to Country/Region Code")
+            field("BA Buy-from Country/Region Code"; Rec."Buy-from Country/Region Code")
             {
                 ApplicationArea = all;
                 Caption = 'Country';
                 Editable = false;
             }
         }
-        modify("Bill-to Country/Region Code")
+        modify("Pay-to Country/Region Code")
         {
             ApplicationArea = all;
             Visible = false;
             Enabled = false;
         }
-        addbefore("Bill-to Name")
+        addfirst("Pay-to")
         {
-            field("BA Bill-to Country/Region Code"; Rec."Bill-to Country/Region Code")
+            field("BA Pay-to Country/Region Code"; Rec."Pay-to Country/Region Code")
             {
                 ApplicationArea = all;
                 Caption = 'Country';
@@ -49,7 +38,7 @@ pageextension 80011 "BA Posted Sales Invoice" extends "Posted Sales Invoice"
             Visible = false;
             Enabled = false;
         }
-        addbefore("Ship-to Name")
+        addfirst("Ship-to")
         {
             field("BA Ship-to Country/Region Code"; Rec."Ship-to Country/Region Code")
             {
@@ -58,22 +47,13 @@ pageextension 80011 "BA Posted Sales Invoice" extends "Posted Sales Invoice"
                 Editable = false;
             }
         }
-        addafter("Sell-to County")
+        addafter("Pay-to County")
         {
-            field("BA Sell-to County Fullname"; Rec."BA Sell-to County Fullname")
+            field("BA Sell-to County Fullname"; Rec."BA Pay-to County Fullname")
             {
                 ApplicationArea = all;
             }
         }
-        addlast(General)
-        {
-            field("User ID"; Rec."User ID")
-            {
-                ApplicationArea = all;
-                Editable = false;
-            }
-        }
-
         addafter("Ship-to County")
         {
             field("BA Ship-to County Fullname"; Rec."BA Ship-to County Fullname")
@@ -81,9 +61,9 @@ pageextension 80011 "BA Posted Sales Invoice" extends "Posted Sales Invoice"
                 ApplicationArea = all;
             }
         }
-        addafter("Bill-to County")
+        addafter("Buy-from County")
         {
-            field("BA Bill-to County Fullname"; Rec."BA Bill-to County Fullname")
+            field("BA Bill-to County Fullname"; Rec."BA Buy-from County Fullname")
             {
                 ApplicationArea = all;
             }

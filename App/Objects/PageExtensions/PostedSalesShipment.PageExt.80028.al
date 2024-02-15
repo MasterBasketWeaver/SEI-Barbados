@@ -1,18 +1,7 @@
-pageextension 80011 "BA Posted Sales Invoice" extends "Posted Sales Invoice"
+pageextension 80028 "BA Posted Sales Shpt." extends "Posted Sales Shipment"
 {
     layout
     {
-        addafter("Document Date")
-        {
-            field("BA Quote Date"; Rec."BA Quote Date")
-            {
-                ApplicationArea = all;
-            }
-            field("Order Date"; Rec."Order Date")
-            {
-                ApplicationArea = all;
-            }
-        }
         modify("Sell-to Country/Region Code")
         {
             ApplicationArea = all;
@@ -65,15 +54,6 @@ pageextension 80011 "BA Posted Sales Invoice" extends "Posted Sales Invoice"
                 ApplicationArea = all;
             }
         }
-        addlast(General)
-        {
-            field("User ID"; Rec."User ID")
-            {
-                ApplicationArea = all;
-                Editable = false;
-            }
-        }
-
         addafter("Ship-to County")
         {
             field("BA Ship-to County Fullname"; Rec."BA Ship-to County Fullname")

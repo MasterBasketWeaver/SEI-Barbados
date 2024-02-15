@@ -1,19 +1,7 @@
-tableextension 80009 "BA Vendor" extends Vendor
+tableextension 80010 "BA Customer" extends Customer
 {
     fields
     {
-        field(80020; "BA Created At"; Date)
-        {
-            DataClassification = CustomerContent;
-            Caption = 'Created On';
-            Editable = false;
-        }
-        field(80021; "BA Created By"; Code[50])
-        {
-            DataClassification = CustomerContent;
-            Caption = 'Created By';
-            Editable = false;
-        }
         field(80010; "BA Region"; Text[30])
         {
             Caption = 'Region';
@@ -48,15 +36,7 @@ tableextension 80009 "BA Vendor" extends Vendor
                     "BA Region" := ''
                 else
                     Rec.CalcFields("BA Region");
-
             end;
         }
     }
-
-    trigger OnAfterInsert()
-    begin
-        Rec."BA Created By" := UserId();
-        Rec."BA Created At" := Today();
-        Rec.Modify(false);
-    end;
 }

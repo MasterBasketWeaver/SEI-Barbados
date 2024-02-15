@@ -1,20 +1,14 @@
-tableextension 80006 "BA Sales Shipment Header" extends "Sales Shipment Header"
+tableextension 80023 "BA Purch. Cr.Memo Header" extends "Purch. Cr. Memo Hdr."
 {
     fields
     {
-        field(80010; "BA Quote Date"; Date)
-        {
-            DataClassification = CustomerContent;
-            Caption = 'Quote Date';
-            Editable = false;
-        }
-        field(80011; "BA Sell-to County Fullname"; Text[50])
+        field(80011; "BA Pay-to County Fullname"; Text[50])
         {
             DataClassification = CustomerContent;
             Caption = 'Province/State Fullname';
             Editable = false;
         }
-        field(80012; "BA Bill-to County Fullname"; Text[50])
+        field(80012; "BA Buy-from County Fullname"; Text[50])
         {
             DataClassification = CustomerContent;
             Caption = 'Province/State Fullname';
