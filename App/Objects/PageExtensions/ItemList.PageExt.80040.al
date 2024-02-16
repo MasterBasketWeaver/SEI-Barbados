@@ -16,6 +16,10 @@ pageextension 80040 "BA Item List" extends "Item List"
             {
                 ApplicationArea = all;
             }
+            field("BA Service Item Only"; Rec."BA Service Item Only")
+            {
+                ApplicationArea = all;
+            }
         }
     }
 }
