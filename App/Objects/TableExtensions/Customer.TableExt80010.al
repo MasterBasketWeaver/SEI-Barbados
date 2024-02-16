@@ -2,6 +2,16 @@ tableextension 80010 "BA Customer" extends Customer
 {
     fields
     {
+        modify("Country/Region Code")
+        {
+            trigger OnAfterValidate()
+            begin
+                if "Country/Region Code" = '' then
+                    "BA Region" := ''
+                else
+                    Rec.CalcFields("BA Region");
+            end;
+        }
         field(80010; "BA Region"; Text[30])
         {
             Caption = 'Region';
@@ -28,15 +38,11 @@ tableextension 80010 "BA Customer" extends Customer
                 Rec.CalcFields("BA County Fullname");
             end;
         }
-        modify("Country/Region Code")
+
+        field(80020; "BA SEI Service Center"; Boolean)
         {
-            trigger OnAfterValidate()
-            begin
-                if "Country/Region Code" = '' then
-                    "BA Region" := ''
-                else
-                    Rec.CalcFields("BA Region");
-            end;
+            DataClassification = CustomerContent;
+            Caption = 'SEI Service Center';
         }
     }
 }

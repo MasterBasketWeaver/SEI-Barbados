@@ -557,8 +557,31 @@ codeunit 75004 "BA Subscibers"
 
 
 
+    [EventSubscriber(ObjectType::Table, Database::"Sales Line", 'OnAfterValidateEvent', 'No.', false, false)]
+    local procedure SalesLineOnAfterValdiateNo(var Rec: Record "Sales Line"; var xRec: Record "Sales Line")
+    begin
+        if Rec."No." = xRec."No." then
+            exit;
+        CheckServiceItem(Rec);
+    end;
+
+    local procedure CheckServiceItem(var SalesLine: Record "Sales Line")
+    var
+        Item: Record Item;
+        Customer: Record Customer;
+    begin
+        if (SalesLine.Type = SalesLine.Type::Item)
+                and (SalesLine."Document Type" in [SalesLine."Document Type"::Quote, SalesLine."Document Type"::Order, SalesLine."Document Type"::Invoice])
+                and Item.Get(SalesLine."No.") and Item."BA Service Item Only"
+                and Customer.Get(SalesLine."Bill-to Customer No.") and not Customer."BA SEI Service Center" then
+            Error(NonServiceCustomerErr, Item."No.");
+    end;
+
+
+
 
     var
         NoCommissionErr: Label '%1 %2 on line %3 requires a %4.';
         InvalidPermissionError: Label 'You do not have permission to make this change.';
+        NonServiceCustomerErr: Label '%1 can only be sold to Service Center customers.';
 }

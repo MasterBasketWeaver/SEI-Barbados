@@ -38,6 +38,11 @@ tableextension 80030 "BA Item" extends Item
                 "Shipment Date" = Field("Date Filter"), "BA Stage" = Filter(Archive | "Closed/Lost" | "Closed/Other")));
             DecimalPlaces = 0 : 5;
         }
+        field(80020; "BA Service Item Only"; Boolean)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Service Item Only';
+        }
     }
 
     trigger OnAfterInsert()

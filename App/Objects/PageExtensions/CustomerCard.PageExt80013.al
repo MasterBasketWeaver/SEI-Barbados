@@ -87,5 +87,12 @@ pageextension 80013 "BA Customer Card" extends "Customer Card"
             Enabled = false;
             Editable = false;
         }
+        addafter("Service Zone Code")
+        {
+            field("BA SEI Service Center"; Rec."BA SEI Service Center")
+            {
+                ApplicationArea = all;
+            }
+        }
     }
 }

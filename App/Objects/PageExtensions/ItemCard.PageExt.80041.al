@@ -24,5 +24,12 @@ pageextension 80041 "BA Item Card" extends "Item Card"
                 ApplicationArea = all;
             }
         }
+        addafter(Blocked)
+        {
+            field("BA Service Item Only"; Rec."BA Service Item Only")
+            {
+                ApplicationArea = all;
+            }
+        }
     }
 }
