@@ -11,6 +11,7 @@ pageextension 80011 "BA Posted Sales Invoice" extends "Posted Sales Invoice"
             field("Order Date"; Rec."Order Date")
             {
                 ApplicationArea = all;
+                Editable = false;
             }
         }
         modify("Sell-to Country/Region Code")
