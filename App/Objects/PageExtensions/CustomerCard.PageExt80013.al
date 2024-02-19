@@ -81,15 +81,15 @@ pageextension 80013 "BA Customer Card" extends "Customer Card"
         }
         addafter("City")
         {
-            field("BA City"; City)
+            field("BA City"; CityText)
             {
                 ApplicationArea = all;
-                Editable = IsEditable;
                 Caption = 'City';
+                Editable = IsEditable;
 
                 trigger OnValidate()
                 begin
-                    Rec."City" := City;
+                    Rec.City := CityText
                 end;
             }
         }
@@ -138,13 +138,13 @@ pageextension 80013 "BA Customer Card" extends "Customer Card"
     var
         [InDataSet]
         IsEditable: Boolean;
-        City: Text[30];
+        CityText: Text[30];
         PostCode: Code[20];
 
 
     trigger OnAfterGetCurrRecord()
     begin
-        City := Rec."City";
+        CityText := Rec."City";
         PostCode := Rec."Post Code";
         IsEditable := CurrPage.Editable();
     end;
