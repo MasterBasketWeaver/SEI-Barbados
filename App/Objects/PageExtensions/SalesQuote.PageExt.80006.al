@@ -211,6 +211,72 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
                 end;
             }
         }
+        modify("Bill-to Post Code")
+        {
+            ApplicationArea = all;
+            Visible = false;
+            Editable = false;
+            Enabled = false;
+        }
+        addafter("Bill-to Post Code")
+        {
+            field("BA Bill-to Post Code"; BillToPostCode)
+            {
+                ApplicationArea = all;
+                Importance = Additional;
+                Editable = IsEditable;
+                Caption = 'Zip Code';
+
+                trigger OnValidate()
+                begin
+                    Rec."Bill-to Post Code" := BillToPostCode;
+                end;
+            }
+        }
+        modify("Sell-to Post Code")
+        {
+            ApplicationArea = all;
+            Visible = false;
+            Editable = false;
+            Enabled = false;
+        }
+        addafter("Sell-to Post Code")
+        {
+            field("BA Sell-to Post Code"; SellToPostCode)
+            {
+                ApplicationArea = all;
+                Importance = Additional;
+                Editable = IsEditable;
+                Caption = 'Zip Code';
+
+                trigger OnValidate()
+                begin
+                    Rec."Sell-to Post Code" := SellToPostCode;
+                end;
+            }
+        }
+        modify("Ship-to Post Code")
+        {
+            ApplicationArea = all;
+            Visible = false;
+            Editable = false;
+            Enabled = false;
+        }
+        addafter("Ship-to Post Code")
+        {
+            field("BA Ship-to Post Code"; ShipToPostCode)
+            {
+                ApplicationArea = all;
+                Importance = Additional;
+                Editable = IsEditable;
+                Caption = 'Zip Code';
+
+                trigger OnValidate()
+                begin
+                    Rec."Ship-to Post Code" := ShipToPostCode;
+                end;
+            }
+        }
     }
 
     actions
@@ -242,6 +308,9 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
         BillToCity: Text[30];
         ShipToCity: Text[30];
         SellToCity: Text[30];
+        BillToPostCode: Code[20];
+        ShipToPostCode: Code[20];
+        SellToPostCode: Code[20];
         [InDataSet]
         IsEditable: boolean;
 
@@ -253,6 +322,9 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
         BillToState := Rec."Bill-to County";
         SellToState := Rec."Sell-to County";
         ShipToState := Rec."Ship-to County";
+        BillToPostCode := Rec."Bill-to Post Code";
+        SellToPostCode := Rec."Sell-to Post Code";
+        ShipToPostCode := Rec."Ship-to Post Code";
         IsEditable := CurrPage.Editable();
     end;
 }

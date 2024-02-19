@@ -15,9 +15,43 @@ pageextension 80014 "BA Vendor Card" extends "Vendor Card"
         }
         addafter("Post Code")
         {
+            field("BA Post Code"; PostCode)
+            {
+                ApplicationArea = all;
+                Importance = Additional;
+                Editable = IsEditable;
+                Caption = 'Zip Code';
+
+                trigger OnValidate()
+                begin
+                    Rec."Post Code" := PostCode;
+                end;
+            }
             field("BA Region"; Rec."BA Region")
             {
                 ApplicationArea = all;
+            }
+        }
+        modify(City)
+        {
+            ApplicationArea = all;
+            Visible = false;
+            Editable = false;
+            Enabled = false;
+        }
+        addafter("City")
+        {
+            field("BA City"; PostCode)
+            {
+                ApplicationArea = all;
+                Importance = Additional;
+                Editable = IsEditable;
+                Caption = 'City';
+
+                trigger OnValidate()
+                begin
+                    Rec."City" := City;
+                end;
             }
         }
         addfirst(AddressDetails)
@@ -54,4 +88,18 @@ pageextension 80014 "BA Vendor Card" extends "Vendor Card"
             Editable = false;
         }
     }
+
+    var
+        [InDataSet]
+        IsEditable: boolean;
+        City: Text[30];
+        PostCode: Code[20];
+
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        City := Rec."City";
+        PostCode := Rec."Post Code";
+        IsEditable := CurrPage.Editable();
+    end;
 }
