@@ -59,7 +59,6 @@ pageextension 80013 "BA Customer Card" extends "Customer Card"
             field("BA Post Code"; PostCode)
             {
                 ApplicationArea = all;
-                Importance = Additional;
                 Editable = IsEditable;
                 Caption = 'Zip Code';
 
@@ -82,10 +81,9 @@ pageextension 80013 "BA Customer Card" extends "Customer Card"
         }
         addafter("City")
         {
-            field("BA City"; PostCode)
+            field("BA City"; City)
             {
                 ApplicationArea = all;
-                Importance = Additional;
                 Editable = IsEditable;
                 Caption = 'City';
 
@@ -139,7 +137,7 @@ pageextension 80013 "BA Customer Card" extends "Customer Card"
 
     var
         [InDataSet]
-        IsEditable: boolean;
+        IsEditable: Boolean;
         City: Text[30];
         PostCode: Code[20];
 
