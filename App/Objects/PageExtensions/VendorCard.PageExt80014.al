@@ -13,12 +13,18 @@ pageextension 80014 "BA Vendor Card" extends "Vendor Card"
                 ApplicationArea = all;
             }
         }
+        modify("Post Code")
+        {
+            ApplicationArea = all;
+            Visible = false;
+            Editable = false;
+            Enabled = false;
+        }
         addafter("Post Code")
         {
             field("BA Post Code"; PostCode)
             {
                 ApplicationArea = all;
-                Importance = Additional;
                 Editable = IsEditable;
                 Caption = 'Zip Code';
 
@@ -41,10 +47,9 @@ pageextension 80014 "BA Vendor Card" extends "Vendor Card"
         }
         addafter("City")
         {
-            field("BA City"; PostCode)
+            field("BA City"; City)
             {
                 ApplicationArea = all;
-                Importance = Additional;
                 Editable = IsEditable;
                 Caption = 'City';
 
