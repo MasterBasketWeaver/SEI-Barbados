@@ -1,4 +1,4 @@
-pageextension 80018 "BA Posted Purchase Invoice" extends "Posted Purchase Invoice"
+pageextension 80019 "BA Posted Purchase Receipt" extends "Posted Purchase Receipt"
 {
     layout
     {
