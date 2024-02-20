@@ -274,6 +274,27 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
                 end;
             }
         }
+        modify("Outbound Whse. Handling Time")
+        {
+            ApplicationArea = all;
+            Visible = false;
+            Editable = false;
+            Enabled = false;
+        }
+        modify("Package Tracking No.")
+        {
+            ApplicationArea = all;
+            Visible = false;
+            Editable = false;
+            Enabled = false;
+        }
+        modify("Shortcut Dimension 2 Code")
+        {
+            ApplicationArea = all;
+            Visible = false;
+            Editable = false;
+            Enabled = false;
+        }
     }
 
     var

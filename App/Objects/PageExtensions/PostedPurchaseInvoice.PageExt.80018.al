@@ -1,4 +1,4 @@
-pageextension 80019 "BA Posted Purchase Receipt" extends "Posted Purchase Receipt"
+pageextension 80018 "BA Posted Purchase Invoice" extends "Posted Purchase Invoice"
 {
     layout
     {
@@ -66,6 +66,14 @@ pageextension 80019 "BA Posted Purchase Receipt" extends "Posted Purchase Receip
             field("BA Bill-to County Fullname"; Rec."BA Buy-from County Fullname")
             {
                 ApplicationArea = all;
+            }
+        }
+        addlast(General)
+        {
+            field("User ID"; Rec."User ID")
+            {
+                ApplicationArea = all;
+                Editable = false;
             }
         }
     }

@@ -7,10 +7,6 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
             ApplicationArea = all;
             Editable = false;
         }
-        modify("Shipment Date")
-        {
-            ApplicationArea = all;
-        }
         modify("Sell-to Country/Region Code")
         {
             ApplicationArea = all;
@@ -277,6 +273,34 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
                 end;
             }
         }
+        modify("Due Date")
+        {
+            ApplicationArea = all;
+            Visible = false;
+            Editable = false;
+            Enabled = false;
+        }
+        modify("Shipment Date")
+        {
+            ApplicationArea = all;
+            Visible = false;
+            Editable = false;
+            Enabled = false;
+        }
+        modify("Package Tracking No.")
+        {
+            ApplicationArea = all;
+            Visible = false;
+            Editable = false;
+            Enabled = false;
+        }
+        modify("Shortcut Dimension 2 Code")
+        {
+            ApplicationArea = all;
+            Visible = false;
+            Editable = false;
+            Enabled = false;
+        }
     }
 
     actions
@@ -298,7 +322,9 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
                     DocPrint.PrintProformaSalesInvoice(Rec);
                 end;
             }
+
         }
+
     }
 
     var
