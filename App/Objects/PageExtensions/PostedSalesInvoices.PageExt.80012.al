@@ -38,4 +38,22 @@ pageextension 80012 "BA Posted Sales Invoices" extends "Posted Sales Invoices"
             }
         }
     }
+
+    actions
+    {
+        addlast(Processing)
+        {
+            action("BA Updated Document Dates")
+            {
+                ApplicationArea = all;
+                Image = UpdateDescription;
+                RunObject = codeunit "BA Fix Doc. Date";
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                PromotedOnly = true;
+                Caption = 'Update Document Dates';
+            }
+        }
+    }
 }
