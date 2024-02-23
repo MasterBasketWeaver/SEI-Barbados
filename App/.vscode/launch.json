@@ -40,22 +40,23 @@
                         // "schemaUpdateMode": "ForceSync" //DOES NOT WORK (runs as recreate)
                 },
                 // {
-                //     "name": "Prod",
-                //     "request": "launch",
-                //     "type": "al",
-                //     "environmentType": "OnPrem",
-                //     "server": "http://localhost",
-                //     "serverInstance": "Prod",
-                //     "authentication": "UserPassword",
-                //     "startupObjectId": 22,
-                //     "startupObjectType": "Page",
-                //     "breakOnError": "All",
-                //     "launchBrowser": false,
-                //     "enableLongRunningSqlStatements": true,
-                //     "enableSqlInformationDebugger": true,
-                //     "tenant": "default",
-                //     "usePublicURLFromServer": false,
-                //     "port": 7049
+                //         "name": "Prod",
+                //         "request": "launch",
+                //         "type": "al",
+                //         "environmentType": "OnPrem",
+                //         "server": "http://localhost",
+                //         "serverInstance": "Prod",
+                //         "authentication": "UserPassword",
+                //         "startupObjectId": 22,
+                //         "startupObjectType": "Page",
+                //         "breakOnError": "All",
+                //         "launchBrowser": false,
+                //         "enableLongRunningSqlStatements": true,
+                //         "enableSqlInformationDebugger": true,
+                //         "tenant": "default",
+                //         "usePublicURLFromServer": false,
+                //         "port": 7049,
+                //         "schemaUpdateMode": "Synchronize"
                 // }
         ]
 }
