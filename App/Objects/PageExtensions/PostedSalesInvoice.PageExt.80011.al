@@ -89,5 +89,13 @@ pageextension 80011 "BA Posted Sales Invoice" extends "Posted Sales Invoice"
                 ApplicationArea = all;
             }
         }
+        addlast("Shipping Details")
+        {
+            field("Inco Terms"; Rec."Inco Terms")
+            {
+                ApplicationArea = all;
+                Editable = false;
+            }
+        }
     }
 }
