@@ -572,7 +572,7 @@ codeunit 75004 "BA Subscibers"
     var
         CountryRegion: Record "Country/Region";
     begin
-        if (Rec."Country/Region Code" = Rec."Country/Region Code") or not CountryRegion.Get(Rec."Country/Region Code") then
+        if (Rec."Country/Region Code" = xRec."Country/Region Code") or not CountryRegion.Get(Rec."Country/Region Code") then
             exit;
         Rec."BA Sell-to State Mandatory" := CountryRegion."BA Sell-to State Mandatory";
         Rec."BA Ship-to State Mandatory" := CountryRegion."BA Ship-to State Mandatory";
@@ -586,10 +586,10 @@ codeunit 75004 "BA Subscibers"
         Customer: Record Customer;
     begin
         Customer.Get(SalesHeader."Sell-to Customer No.");
-        if Customer."BA Sell-to State Mandatory" then
-            SalesHeader.TestField("Sell-to County");
-        if Customer."BA Ship-to State Mandatory" then
-            SalesHeader.TestField("Ship-to County");
+        if Customer."BA Sell-to State Mandatory" and (SalesHeader."Sell-to County" = '') then
+            Error('Sell-to State must be specified for Customer %1.', Customer."No.");
+        if Customer."BA Ship-to State Mandatory" and (SalesHeader."Ship-to County" = '') then
+            Error('Ship-to State must be specified for Customer %1.', Customer."No.");
         SalesHeader.TestField("Inco Terms");
     end;
 

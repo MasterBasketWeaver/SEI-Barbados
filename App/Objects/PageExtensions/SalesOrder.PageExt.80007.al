@@ -75,6 +75,7 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
                 CaptionClass = '5,1,' + Rec."Sell-to Country/Region Code";
                 TableRelation = "BA Province/State".Symbol where("Country/Region Code" = field("Sell-to Country/Region Code"));
                 Editable = IsEditable;
+                ShowMandatory = SellToMandatory;
 
                 trigger OnValidate()
                 begin
@@ -104,6 +105,7 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
                 CaptionClass = '5,1,' + Rec."Ship-to Country/Region Code";
                 TableRelation = "BA Province/State".Symbol where("Country/Region Code" = field("Ship-to Country/Region Code"));
                 Editable = IsEditable;
+                ShowMandatory = ShipToMandatory;
 
                 trigger OnValidate()
                 begin
@@ -309,8 +311,14 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
         SellToPostCode: Code[20];
         [InDataSet]
         IsEditable: boolean;
+        [InDataSet]
+        ShipToMandatory: Boolean;
+        [InDataSet]
+        SellToMandatory: Boolean;
 
     trigger OnAfterGetCurrRecord()
+    var
+        Customer: Record Customer;
     begin
         BillToCity := Rec."Bill-to City";
         SellToCity := Rec."Sell-to City";
@@ -322,5 +330,12 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
         SellToPostCode := Rec."Sell-to Post Code";
         ShipToPostCode := Rec."Ship-to Post Code";
         IsEditable := CurrPage.Editable();
+        if (Customer."No." <> Rec."Sell-to Customer No.") and (Rec."Sell-to Customer No." <> '') and Customer.Get(Rec."Sell-to Customer No.") then begin
+            SellToMandatory := Customer."BA Sell-to State Mandatory";
+            ShipToMandatory := Customer."BA Ship-to State Mandatory";
+        end else begin
+            SellToMandatory := true;
+            ShipToMandatory := true;
+        end;
     end;
 }
