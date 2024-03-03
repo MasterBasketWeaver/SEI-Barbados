@@ -8,6 +8,16 @@ tableextension 80007 "BA Country/Region" extends "Country/Region"
             Caption = 'Region';
             TableRelation = "BA Region".Name;
         }
+        field(80030; "BA Sell-to State Mandatory"; Boolean)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Sell-to State Mandatory';
+        }
+        field(80031; "BA Ship-to State Mandatory"; Boolean)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Ship-to State Mandatory';
+        }
     }
 
     trigger OnDelete()

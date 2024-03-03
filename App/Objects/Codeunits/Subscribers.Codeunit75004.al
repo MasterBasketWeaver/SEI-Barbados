@@ -567,6 +567,31 @@ codeunit 75004 "BA Subscibers"
     end;
 
 
+    [EventSubscriber(ObjectType::Table, Database::Customer, 'OnAfterValidateEvent', 'Country/Region Code', false, false)]
+    local procedure CustomerOnAfterValidateCountryRegionCode(var Rec: Record Customer; var xRec: Record Customer)
+    var
+        CountryRegion: Record "Country/Region";
+    begin
+        if (Rec."Country/Region Code" = Rec."Country/Region Code") or not CountryRegion.Get(Rec."Country/Region Code") then
+            exit;
+        Rec."BA Sell-to State Mandatory" := CountryRegion."BA Sell-to State Mandatory";
+        Rec."BA Ship-to State Mandatory" := CountryRegion."BA Ship-to State Mandatory";
+        Rec.Modify(true);
+    end;
+
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterCheckMandatoryFields', '', false, false)]
+    local procedure SalesPostOnAfterCheckMandatoryFields(var SalesHeader: Record "Sales Header")
+    var
+        Customer: Record Customer;
+    begin
+        Customer.Get(SalesHeader."Sell-to Customer No.");
+        if Customer."BA Sell-to State Mandatory" then
+            SalesHeader.TestField("Sell-to County");
+        if Customer."BA Ship-to State Mandatory" then
+            SalesHeader.TestField("Ship-to County");
+        SalesHeader.TestField("Inco Terms");
+    end;
 
 
     var

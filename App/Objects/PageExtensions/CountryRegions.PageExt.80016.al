@@ -11,6 +11,17 @@ pageextension 80016 "BA Country/Regions" extends "Countries/Regions"
                 ApplicationArea = all;
             }
         }
+        addlast(Control1)
+        {
+            field("BA Sell-to State Mandatory"; Rec."BA Sell-to State Mandatory")
+            {
+                ApplicationArea = all;
+            }
+            field("BA Ship-to State Mandatory"; Rec."BA Ship-to State Mandatory")
+            {
+                ApplicationArea = all;
+            }
+        }
     }
 
     actions

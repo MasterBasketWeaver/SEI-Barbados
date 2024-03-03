@@ -148,6 +148,14 @@ pageextension 80013 "BA Customer Card" extends "Customer Card"
                 {
                     ApplicationArea = all;
                 }
+                field("BA Sell-to State Mandatory"; Rec."BA Sell-to State Mandatory")
+                {
+                    ApplicationArea = all;
+                }
+                field("BA Ship-to State Mandatory"; Rec."BA Ship-to State Mandatory")
+                {
+                    ApplicationArea = all;
+                }
             }
         }
         modify(Blocked)

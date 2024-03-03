@@ -44,5 +44,15 @@ tableextension 80010 "BA Customer" extends Customer
             DataClassification = CustomerContent;
             Caption = 'SEI Service Center';
         }
+        field(80030; "BA Sell-to State Mandatory"; Boolean)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Sell-to State Mandatory';
+        }
+        field(80031; "BA Ship-to State Mandatory"; Boolean)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Ship-to State Mandatory';
+        }
     }
 }
