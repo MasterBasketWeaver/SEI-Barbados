@@ -601,6 +601,17 @@ codeunit 75004 "BA Subscibers"
             SalesHeader.TestField("BA EORI No.");
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterPostSalesDoc', '', false, false)]
+    local procedure SalesPostOnAfterPostSalesDoc(var SalesHeader: Record "Sales Header"; PreviewMode: Boolean)
+    var
+        Customer: Record Customer;
+    begin
+        if PreviewMode then
+            exit;
+        if SalesHeader.Invoice and Customer.Get(SalesHeader."Sell-to Customer No.") and Customer."BA COC Mandatory" and not SalesHeader.GetHideValidationDialog() then
+            Message(COCMsg, Customer."No.");
+    end;
+
 
     var
         NoCommissionErr: Label '%1 %2 on line %3 requires a %4.';
@@ -609,4 +620,5 @@ codeunit 75004 "BA Subscibers"
         SellToTestFieldErr: Label 'Sell-to State must have a value in Sales Header %1=%2, %3=%4.';
         ShipToTestFieldErr: Label 'Ship-to State must have a value in Sales Header %1=%2, %3=%4.';
         FIDNoFieldErr: Label 'Must specify a value for either the %1 or %2.';
+        COCMsg: Label 'A Certificate of Conformity (COC) is required for customer %1.\Please fill out the required documentation after invoicing.';
 }

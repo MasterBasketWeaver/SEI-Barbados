@@ -164,6 +164,10 @@ pageextension 80013 "BA Customer Card" extends "Customer Card"
                 {
                     ApplicationArea = all;
                 }
+                field("BA COC Mandatory"; Rec."BA COC Mandatory")
+                {
+                    ApplicationArea = all;
+                }
             }
         }
         modify(Blocked)

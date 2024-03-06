@@ -64,5 +64,10 @@ tableextension 80010 "BA Customer" extends Customer
             DataClassification = CustomerContent;
             Caption = 'EORI No. Mandatory';
         }
+        field(80034; "BA COC Mandatory"; Boolean)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Cert. of Conformity (COC)  Mandatory';
+        }
     }
 }
