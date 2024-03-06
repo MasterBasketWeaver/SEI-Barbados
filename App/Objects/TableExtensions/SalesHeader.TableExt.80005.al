@@ -71,5 +71,15 @@ tableextension 80005 "BA Sales Header" extends "Sales Header"
             CalcFormula = lookup("BA Province/State".Name where("Print Full Name" = const(true), "Country/Region Code" = field("Ship-to Country/Region Code"), Symbol = field("Ship-to County")));
             Editable = false;
         }
+        field(80021; "BA EORI No."; Text[20])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'EORI No.';
+        }
+        field(80022; "BA Ship-to EORI No."; Text[20])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Ship-to EORI No.';
+        }
     }
 }

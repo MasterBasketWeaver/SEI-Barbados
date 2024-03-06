@@ -75,6 +75,7 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
                 CaptionClass = '5,1,' + Rec."Sell-to Country/Region Code";
                 TableRelation = "BA Province/State".Symbol where("Country/Region Code" = field("Sell-to Country/Region Code"));
                 Editable = IsEditable;
+                ShowMandatory = SellToMandatory;
 
                 trigger OnValidate()
                 begin
@@ -104,6 +105,7 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
                 CaptionClass = '5,1,' + Rec."Ship-to Country/Region Code";
                 TableRelation = "BA Province/State".Symbol where("Country/Region Code" = field("Ship-to Country/Region Code"));
                 Editable = IsEditable;
+                ShowMandatory = ShipToMandatory;
 
                 trigger OnValidate()
                 begin
@@ -273,6 +275,7 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
                     Rec."Ship-to Post Code" := ShipToPostCode;
                 end;
             }
+
         }
         modify("Outbound Whse. Handling Time")
         {
@@ -295,6 +298,57 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
             Editable = false;
             Enabled = false;
         }
+
+        addbefore("Other Tax No.")
+        {
+            field("BA Tax Registration No."; Rec."ENC Tax Registration No.")
+            {
+                ApplicationArea = All;
+                ShowMandatory = FIDMandatory;
+
+                trigger OnValidate()
+                begin
+                    if UsesFID then
+                        FIDMandatory := (Rec."ENC Tax Registration No." = '') and (Rec."ENC Ship-To Tax Registration No." = '');
+                end;
+            }
+            field("BA EORI No."; Rec."BA EORI No.")
+            {
+                ApplicationArea = all;
+                ShowMandatory = EORIMandatory;
+
+                trigger OnValidate()
+                begin
+                    if UsesEORI then
+                        EORIMandatory := (Rec."BA EORI No." = '') and (Rec."BA Ship-to EORI No." = '');
+                end;
+            }
+        }
+        addbefore("Other Ship-To Tax No.")
+        {
+            field("ENC Ship-To Tax Registration No."; Rec."ENC Ship-To Tax Registration No.")
+            {
+                ApplicationArea = All;
+                ShowMandatory = FIDMandatory;
+                trigger OnValidate()
+                begin
+                    if UsesFID then
+                        FIDMandatory := (Rec."ENC Tax Registration No." = '') and (Rec."ENC Ship-To Tax Registration No." = '');
+                end;
+            }
+            field("BA Ship-to EORI No."; Rec."BA Ship-to EORI No.")
+            {
+                ApplicationArea = all;
+                ShowMandatory = EORIMandatory;
+
+                trigger OnValidate()
+                begin
+                    if UsesEORI then
+                        EORIMandatory := (Rec."BA EORI No." = '') and (Rec."BA Ship-to EORI No." = '');
+                end;
+            }
+        }
+
     }
 
     var
@@ -309,8 +363,21 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
         SellToPostCode: Code[20];
         [InDataSet]
         IsEditable: boolean;
+        [InDataSet]
+        ShipToMandatory: Boolean;
+        [InDataSet]
+        SellToMandatory: Boolean;
+        [InDataSet]
+        FIDMandatory: Boolean;
+        UsesFID: Boolean;
+        [InDataSet]
+        EORIMandatory: Boolean;
+        UsesEORI: Boolean;
+
 
     trigger OnAfterGetCurrRecord()
+    var
+        Customer: Record Customer;
     begin
         BillToCity := Rec."Bill-to City";
         SellToCity := Rec."Sell-to City";
@@ -322,5 +389,22 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
         SellToPostCode := Rec."Sell-to Post Code";
         ShipToPostCode := Rec."Ship-to Post Code";
         IsEditable := CurrPage.Editable();
+        if (Customer."No." <> Rec."Sell-to Customer No.") and (Rec."Sell-to Customer No." <> '') and Customer.Get(Rec."Sell-to Customer No.") then begin
+            SellToMandatory := Customer."BA Sell-to State Mandatory";
+            ShipToMandatory := Customer."BA Ship-to State Mandatory";
+            FIDMandatory := Customer."BA FID No. Mandatory";
+            if FIDMandatory then
+                UsesFID := true;
+            EORIMandatory := Customer."BA EORI No. Mandatory";
+            if EORIMandatory then
+                UsesEORI := true;
+        end else begin
+            SellToMandatory := false;
+            ShipToMandatory := false;
+            FIDMandatory := false;
+            UsesFID := false;
+            EORIMandatory := false;
+            UsesEORI := false;
+        end;
     end;
 }

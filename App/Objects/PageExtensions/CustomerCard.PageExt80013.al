@@ -126,12 +126,59 @@ pageextension 80013 "BA Customer Card" extends "Customer Card"
             Enabled = false;
             Editable = false;
         }
-        addafter("Service Zone Code")
+        addlast(Content)
         {
-            field("BA SEI Service Center"; Rec."BA SEI Service Center")
+            group("BA Account & System Control")
             {
-                ApplicationArea = all;
+                Caption = 'Account & System Control';
+                field("BA Blocked"; Rec.Blocked)
+                {
+                    ApplicationArea = all;
+                }
+                field("BA Privacy Blocked"; Rec."Privacy Blocked")
+                {
+                    ApplicationArea = all;
+                }
+                field("BA Salesperson/Country Mandatory"; Rec."Salesperson/Country Manadatory")
+                {
+                    ToolTip = 'Specifies the value of the Salesperson/Country Mandatory field.';
+                    ApplicationArea = All;
+                }
+                field("BA SEI Service Center"; Rec."BA SEI Service Center")
+                {
+                    ApplicationArea = all;
+                }
+                field("BA Sell-to State Mandatory"; Rec."BA Sell-to State Mandatory")
+                {
+                    ApplicationArea = all;
+                }
+                field("BA Ship-to State Mandatory"; Rec."BA Ship-to State Mandatory")
+                {
+                    ApplicationArea = all;
+                }
+                field("BA FID No. Mandatory"; Rec."BA FID No. Mandatory")
+                {
+                    ApplicationArea = all;
+                }
+                field("BA Sell-to EORI No."; Rec."BA EORI No. Mandatory")
+                {
+                    ApplicationArea = all;
+                }
+                field("BA COC Mandatory"; Rec."BA COC Mandatory")
+                {
+                    ApplicationArea = all;
+                }
             }
+        }
+        modify(Blocked)
+        {
+            ApplicationArea = all;
+            Visible = false;
+        }
+        modify("Privacy Blocked")
+        {
+            ApplicationArea = all;
+            Visible = false;
         }
     }
 
