@@ -97,5 +97,19 @@ pageextension 80011 "BA Posted Sales Invoice" extends "Posted Sales Invoice"
                 Editable = false;
             }
         }
+        addafter("Tax Registration No.")
+        {
+            field("BA EORI No."; Rec."BA EORI No.")
+            {
+                ApplicationArea = all;
+            }
+        }
+        addafter("Ship-To Tax Registration No.")
+        {
+            field("BA Ship-to EORI No."; Rec."BA Ship-to EORI No.")
+            {
+                ApplicationArea = all;
+            }
+        }
     }
 }

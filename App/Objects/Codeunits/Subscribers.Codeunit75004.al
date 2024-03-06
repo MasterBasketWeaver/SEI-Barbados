@@ -576,6 +576,8 @@ codeunit 75004 "BA Subscibers"
             exit;
         Rec."BA Sell-to State Mandatory" := CountryRegion."BA Sell-to State Mandatory";
         Rec."BA Ship-to State Mandatory" := CountryRegion."BA Ship-to State Mandatory";
+        Rec."BA FID No. Mandatory" := CountryRegion."BA FID No. Mandatory";
+        Rec."BA EORI No. Mandatory" := CountryRegion."BA EORI No. Mandatory";
         Rec.Modify(true);
     end;
 
@@ -587,10 +589,16 @@ codeunit 75004 "BA Subscibers"
     begin
         Customer.Get(SalesHeader."Sell-to Customer No.");
         if Customer."BA Sell-to State Mandatory" and (SalesHeader."Sell-to County" = '') then
-            Error('Sell-to State must be specified for Customer %1.', Customer."No.");
+            Error(SellToTestfieldErr, SalesHeader.FieldNo("Document Type"), SalesHeader."Document Type", SalesHeader.FieldNo("No."), SalesHeader."No.");
         if Customer."BA Ship-to State Mandatory" and (SalesHeader."Ship-to County" = '') then
-            Error('Ship-to State must be specified for Customer %1.', Customer."No.");
+            Error(ShipToTestfieldErr, SalesHeader.FieldNo("Document Type"), SalesHeader."Document Type", SalesHeader.FieldNo("No."), SalesHeader."No.");
+        SalesHeader.TestField("ENC Phone No.");
+        SalesHeader.TestField("ENC Ship-To Phone No.");
         SalesHeader.TestField("Inco Terms");
+        if Customer."BA FID No. Mandatory" and (SalesHeader."ENC Tax Registration No." = '') and (SalesHeader."ENC Ship-To Tax Registration No." = '') then
+            Error(FIDNoFieldErr, SalesHeader.FieldCaption("ENC Tax Registration No."), SalesHeader.FieldCaption("ENC Ship-To Tax Registration No."));
+        if Customer."BA EORI No. Mandatory" then
+            SalesHeader.TestField("BA EORI No.");
     end;
 
 
@@ -598,4 +606,7 @@ codeunit 75004 "BA Subscibers"
         NoCommissionErr: Label '%1 %2 on line %3 requires a %4.';
         InvalidPermissionError: Label 'You do not have permission to make this change.';
         NonServiceCustomerErr: Label '%1 can only be sold to Service Center customers.';
+        SellToTestFieldErr: Label 'Sell-to State must have a value in Sales Header %1=%2, %3=%4.';
+        ShipToTestFieldErr: Label 'Ship-to State must have a value in Sales Header %1=%2, %3=%4.';
+        FIDNoFieldErr: Label 'Must specify a value for either the %1 or %2.';
 }

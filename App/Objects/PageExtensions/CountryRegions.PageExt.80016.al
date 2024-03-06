@@ -21,6 +21,14 @@ pageextension 80016 "BA Country/Regions" extends "Countries/Regions"
             {
                 ApplicationArea = all;
             }
+            field("BA FID No. Mandatory"; Rec."BA FID No. Mandatory")
+            {
+                ApplicationArea = all;
+            }
+            field("BA Sell-to EORI No."; Rec."BA EORI No. Mandatory")
+            {
+                ApplicationArea = all;
+            }
         }
     }
 

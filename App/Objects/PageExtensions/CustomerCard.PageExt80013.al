@@ -156,6 +156,14 @@ pageextension 80013 "BA Customer Card" extends "Customer Card"
                 {
                     ApplicationArea = all;
                 }
+                field("BA FID No. Mandatory"; Rec."BA FID No. Mandatory")
+                {
+                    ApplicationArea = all;
+                }
+                field("BA Sell-to EORI No."; Rec."BA EORI No. Mandatory")
+                {
+                    ApplicationArea = all;
+                }
             }
         }
         modify(Blocked)
