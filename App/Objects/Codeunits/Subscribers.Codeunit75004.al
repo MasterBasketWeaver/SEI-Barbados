@@ -613,6 +613,18 @@ codeunit 75004 "BA Subscibers"
     end;
 
 
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterValidateEvent', 'Sell-to Customer No.', false, false)]
+    local procedure SalesHeaderOnAfterValidateSellToCustomerNo(var Rec: Record "Sales Header"; var xRec: Record "Sales Header")
+    var
+        Customer: Record Customer;
+    begin
+        if (Rec."Sell-to Customer No." = xRec."Sell-to Customer No.") or (Rec."Sell-to Customer No." = '') then
+            exit;
+        Customer.Get(Rec."Sell-to Customer No.");
+        Rec."BA EORI No." := Customer."BA EORI No.";
+    end;
+
+
     var
         NoCommissionErr: Label '%1 %2 on line %3 requires a %4.';
         InvalidPermissionError: Label 'You do not have permission to make this change.';

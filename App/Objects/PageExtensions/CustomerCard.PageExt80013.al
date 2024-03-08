@@ -170,6 +170,18 @@ pageextension 80013 "BA Customer Card" extends "Customer Card"
                 }
             }
         }
+        addafter("VAT Registration No.")
+        {
+            field("BA EORI No."; Rec."BA EORI No.")
+            {
+                ApplicationArea = all;
+            }
+            field("Other Tax No."; Rec."Other Tax No.")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Other Tax No. field.';
+            }
+        }
         modify(Blocked)
         {
             ApplicationArea = all;
