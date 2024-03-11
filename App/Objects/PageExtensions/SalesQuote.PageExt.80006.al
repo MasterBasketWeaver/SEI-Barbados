@@ -301,6 +301,34 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
             Editable = false;
             Enabled = false;
         }
+        addbefore("Other Tax No.")
+        {
+            field("BA EORI No."; Rec."BA EORI No.")
+            {
+                ApplicationArea = all;
+                ShowMandatory = EORIMandatory;
+
+                trigger OnValidate()
+                begin
+                    if UsesEORI then
+                        EORIMandatory := (Rec."BA EORI No." = '') and (Rec."BA Ship-to EORI No." = '');
+                end;
+            }
+        }
+        addbefore("Other Ship-To Tax No.")
+        {
+            field("BA Ship-to EORI No."; Rec."BA Ship-to EORI No.")
+            {
+                ApplicationArea = all;
+                ShowMandatory = EORIMandatory;
+
+                trigger OnValidate()
+                begin
+                    if UsesEORI then
+                        EORIMandatory := (Rec."BA EORI No." = '') and (Rec."BA Ship-to EORI No." = '');
+                end;
+            }
+        }
     }
 
     actions
@@ -338,9 +366,14 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
         ShipToPostCode: Code[20];
         SellToPostCode: Code[20];
         [InDataSet]
-        IsEditable: boolean;
+        IsEditable: Boolean;
+        [InDataSet]
+        EORIMandatory: Boolean;
+        UsesEORI: Boolean;
 
     trigger OnAfterGetCurrRecord()
+    var
+        Customer: Record Customer;
     begin
         BillToCity := Rec."Bill-to City";
         SellToCity := Rec."Sell-to City";
@@ -352,5 +385,13 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
         SellToPostCode := Rec."Sell-to Post Code";
         ShipToPostCode := Rec."Ship-to Post Code";
         IsEditable := CurrPage.Editable();
+        if (Customer."No." <> Rec."Sell-to Customer No.") and (Rec."Sell-to Customer No." <> '') and Customer.Get(Rec."Sell-to Customer No.") then begin
+            EORIMandatory := Customer."BA EORI No. Mandatory";
+            if EORIMandatory then
+                UsesEORI := true;
+        end else begin
+            EORIMandatory := false;
+            UsesEORI := false;
+        end;
     end;
 }
