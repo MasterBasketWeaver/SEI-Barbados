@@ -597,8 +597,8 @@ codeunit 75004 "BA Subscibers"
         SalesHeader.TestField("Inco Terms");
         if Customer."BA FID No. Mandatory" and (SalesHeader."ENC Tax Registration No." = '') and (SalesHeader."ENC Ship-To Tax Registration No." = '') then
             Error(FIDNoFieldErr, SalesHeader.FieldCaption("ENC Tax Registration No."), SalesHeader.FieldCaption("ENC Ship-To Tax Registration No."));
-        if Customer."BA EORI No. Mandatory" then
-            SalesHeader.TestField("BA EORI No.");
+        if Customer."BA EORI No. Mandatory" and (SalesHeader."BA EORI No." = '') and (SalesHeader."BA Ship-To EORI No." = '') then
+            Error(FIDNoFieldErr, SalesHeader.FieldCaption("BA EORI No."), SalesHeader.FieldCaption("BA Ship-To EORI No."));
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterPostSalesDoc', '', false, false)]
