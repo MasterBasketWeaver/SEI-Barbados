@@ -631,6 +631,6 @@ codeunit 75004 "BA Subscibers"
         NonServiceCustomerErr: Label '%1 can only be sold to Service Center customers.';
         SellToTestFieldErr: Label 'Sell-to State must have a value in Sales Header %1=%2, %3=%4.';
         ShipToTestFieldErr: Label 'Ship-to State must have a value in Sales Header %1=%2, %3=%4.';
-        FIDNoFieldErr: Label 'Must specify a value for either the %1 or %2.';
+        FIDNoFieldErr: Label 'Must specify a value for either the %1 or %2 field.';
         COCMsg: Label 'A Certificate of Conformity (COC) is required for customer %1.\Please fill out the required documentation after invoicing.';
 }
