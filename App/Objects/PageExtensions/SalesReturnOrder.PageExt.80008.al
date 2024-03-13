@@ -49,7 +49,6 @@ pageextension 80008 "BA Sales Return Order" extends "Sales Return Order"
             {
                 ApplicationArea = all;
                 Caption = 'Country';
-                Editable = false;
             }
         }
         modify("Sell-to County")

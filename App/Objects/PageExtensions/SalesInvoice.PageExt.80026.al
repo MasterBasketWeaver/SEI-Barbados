@@ -44,7 +44,6 @@ pageextension 80026 "BA Sales Invoice" extends "Sales Invoice"
             {
                 ApplicationArea = all;
                 Caption = 'Country';
-                Editable = false;
             }
         }
         modify("Sell-to County")
