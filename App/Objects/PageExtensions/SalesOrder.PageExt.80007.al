@@ -56,7 +56,6 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
             {
                 ApplicationArea = all;
                 Caption = 'Country';
-                Editable = false;
             }
         }
         modify("Sell-to County")

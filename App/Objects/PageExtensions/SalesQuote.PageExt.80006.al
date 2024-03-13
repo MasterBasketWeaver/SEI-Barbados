@@ -49,7 +49,6 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
             {
                 ApplicationArea = all;
                 Caption = 'Country';
-                Editable = false;
             }
         }
         modify("Sell-to County")
