@@ -566,7 +566,13 @@ codeunit 75004 "BA Subscibers"
             Error(NonServiceCustomerErr, Item."No.");
     end;
 
-
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post Prepayments", 'OnAfterPostPrepayments', '', false, false)]
+    local procedure SalesLineOnAfterValdiateNo2()
+    begin
+        // if Rec."No." = xRec."No." then
+        //     exit;
+        // CheckServiceItem(Rec);
+    end;
 
 
     var
