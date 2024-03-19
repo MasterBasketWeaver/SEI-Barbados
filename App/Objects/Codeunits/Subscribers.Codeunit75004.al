@@ -567,12 +567,43 @@ codeunit 75004 "BA Subscibers"
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post Prepayments", 'OnAfterPostPrepayments', '', false, false)]
-    local procedure SalesLineOnAfterValdiateNo2()
+    local procedure SalesPostPrepaymentsOnAfterPostPrepayments(var SalesHeader: Record "Sales Header"; var SalesInvoiceHeader: Record "Sales Invoice Header")
+    var
+        ArchiveMgt: Codeunit ArchiveManagement;
     begin
-        // if Rec."No." = xRec."No." then
-        //     exit;
-        // CheckServiceItem(Rec);
+        ArchiveMgt.StoreSalesDocument(SalesHeader, false);
+        SalesInvoiceHeader."Order No." := SalesHeader."No.";
+        SalesInvoiceHeader."BA Order No." := SalesHeader."No.";
+        SalesInvoiceHeader.Modify(false);
     end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnBeforeInsertEvent', '', false, false)]
+    local procedure SalesHeaderOnAfterInsert(var Rec: Record "Sales Header")
+    begin
+        if Rec."Document Type" = Rec."Document Type"::Order then begin
+            Rec."Compress Prepayment" := true;
+            Rec."Prepmt. Include Tax" := true;
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales Tax Calculate", 'OnBeforeAddSalesLineGetSalesHeader', '', false, false)]
+    local procedure SalesTaxCalculateOnBeforeAddSalesLineGetSalesHeader(var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line"; var IsHandled: Boolean)
+    var
+        SalesHeaderArchive: Record "Sales Header Archive";
+    begin
+        if not SalesLine."Prepayment Line" and (SalesLine."Prepayment Amount" = 0) then
+            exit;
+        IsHandled := true;
+        if SalesHeader.Get(SalesLine."Document Type", SalesLine."Document No.") then
+            exit;
+        SalesHeaderArchive.SetRange("Document Type", SalesLine."Document Type");
+        SalesHeaderArchive.SetRange("No.", SalesLine."Document No.");
+        SalesHeaderArchive.FindLast();
+        SalesHeader.Init();
+        SalesHeader.TransferFields(SalesHeaderArchive);
+    end;
+
+
 
 
     var
