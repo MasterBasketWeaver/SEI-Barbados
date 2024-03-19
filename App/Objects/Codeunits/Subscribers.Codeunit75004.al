@@ -586,6 +586,7 @@ codeunit 75004 "BA Subscibers"
     local procedure SalesPostOnAfterCheckMandatoryFields(var SalesHeader: Record "Sales Header")
     var
         Customer: Record Customer;
+        CountryRegion: Record "Country/Region";
     begin
         Customer.Get(SalesHeader."Sell-to Customer No.");
         if Customer."BA Sell-to State Mandatory" and (SalesHeader."Sell-to County" = '') then
@@ -595,10 +596,12 @@ codeunit 75004 "BA Subscibers"
         SalesHeader.TestField("ENC Phone No.");
         SalesHeader.TestField("ENC Ship-To Phone No.");
         SalesHeader.TestField("Inco Terms");
-        if Customer."BA FID No. Mandatory" and (SalesHeader."ENC Tax Registration No." = '') and (SalesHeader."ENC Ship-To Tax Registration No." = '') then
-            Error(FIDNoFieldErr, SalesHeader.FieldCaption("ENC Tax Registration No."), SalesHeader.FieldCaption("ENC Ship-To Tax Registration No."));
-        if Customer."BA EORI No. Mandatory" and (SalesHeader."BA EORI No." = '') and (SalesHeader."BA Ship-To EORI No." = '') then
-            Error(FIDNoFieldErr, SalesHeader.FieldCaption("BA EORI No."), SalesHeader.FieldCaption("BA Ship-To EORI No."));
+        if Customer."BA FID No. Mandatory" and CountryRegion.Get(SalesHeader."Ship-to Country/Region Code") and CountryRegion."BA FID No. Mandatory" then
+            if (SalesHeader."ENC Tax Registration No." = '') and (SalesHeader."ENC Ship-To Tax Registration No." = '') then
+                Error(FIDNoFieldErr, SalesHeader.FieldCaption("ENC Tax Registration No."), SalesHeader.FieldCaption("ENC Ship-To Tax Registration No."));
+        if Customer."BA EORI No. Mandatory" and CountryRegion.Get(SalesHeader."Ship-to Country/Region Code") and CountryRegion."BA EORI No. Mandatory" then
+            if (SalesHeader."BA EORI No." = '') and (SalesHeader."BA Ship-To EORI No." = '') then
+                Error(FIDNoFieldErr, SalesHeader.FieldCaption("BA EORI No."), SalesHeader.FieldCaption("BA Ship-To EORI No."));
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterPostSalesDoc', '', false, false)]
