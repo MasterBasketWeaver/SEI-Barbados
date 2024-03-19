@@ -605,6 +605,23 @@ codeunit 75004 "BA Subscibers"
 
 
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::ArchiveManagement, 'OnBeforeSalesHeaderArchiveInsert', '', false, false)]
+    local procedure ArchiveMgtOnBeforeSalesHeaderArchiveInsert(var SalesHeaderArchive: Record "Sales Header Archive"; SalesHeader: Record "Sales Header")
+    begin
+        SalesHeader.CalcFields("BA Bill-to County Fullname", "BA Sell-to County Fullname", "BA Ship-to County Fullname");
+        SalesHeaderArchive."BA Bill-to County Fullname" := SalesHeader."BA Bill-to County Fullname";
+        SalesHeaderArchive."BA Sell-to County Fullname" := SalesHeader."BA Sell-to County Fullname";
+        SalesHeaderArchive."BA Ship-to County Fullname" := SalesHeader."BA Ship-to County Fullname";
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::ArchiveManagement, 'OnBeforeSalesLineArchiveInsert', '', false, false)]
+    local procedure ArchiveMgtOnBeforeSalesLineArchiveInsert(var SalesLineArchive: Record "Sales Line Archive"; SalesLine: Record "Sales Line")
+    begin
+        SalesLine.CalcFields("BA Stage");
+        SalesLineArchive."BA Stage" := SalesLine."BA Stage";
+    end;
+
+
 
     var
         NoCommissionErr: Label '%1 %2 on line %3 requires a %4.';
