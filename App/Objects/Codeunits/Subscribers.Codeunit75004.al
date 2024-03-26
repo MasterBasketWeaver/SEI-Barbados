@@ -566,6 +566,85 @@ codeunit 75004 "BA Subscibers"
             Error(NonServiceCustomerErr, Item."No.");
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post Prepayments", 'OnAfterPostPrepayments', '', false, false)]
+    local procedure SalesPostPrepaymentsOnAfterPostPrepayments(var SalesHeader: Record "Sales Header"; var SalesInvoiceHeader: Record "Sales Invoice Header")
+    var
+        ArchiveMgt: Codeunit ArchiveManagement;
+    begin
+        ArchiveMgt.StoreSalesDocument(SalesHeader, false);
+        SalesInvoiceHeader."Order No." := SalesHeader."No.";
+        SalesInvoiceHeader."BA Order No." := SalesHeader."No.";
+        SalesInvoiceHeader.Modify(false);
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnBeforeInsertEvent', '', false, false)]
+    local procedure SalesHeaderOnAfterInsert(var Rec: Record "Sales Header")
+    begin
+        if Rec."Document Type" = Rec."Document Type"::Order then begin
+            Rec."Compress Prepayment" := true;
+            Rec."Prepmt. Include Tax" := true;
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales Tax Calculate", 'OnBeforeAddSalesLineGetSalesHeader', '', false, false)]
+    local procedure SalesTaxCalculateOnBeforeAddSalesLineGetSalesHeader(var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line"; var IsHandled: Boolean)
+    begin
+        GetPrepaymentArchivedHeader(SalesHeader, SalesLine, IsHandled);
+    end;
+
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales Tax Calculate", 'OnBeforeIsFinalPrepaidSalesLineOnBeforeGetHeaderAndCheckLine', '', false, false)]
+    local procedure SalesTaxCalculateOnBeforeIsFinalPrepaidSalesLineOnBeforeGetHeaderAndCheckLine(var SalesLine: Record "Sales Line"; var SalesHeader: Record "Sales Header"; var CheckSalesLine: Record "Sales Line"; var IsHandled: Boolean; var Result: Boolean)
+    var
+        SalesLineArchive: Record "Sales Line Archive";
+    begin
+        GetPrepaymentArchivedHeader(SalesHeader, SalesLine, IsHandled, CheckSalesLine);
+        Result := CheckSalesLine."Line No." = 0;
+    end;
+
+    local procedure GetPrepaymentArchivedHeader(var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line"; var IsHandled: Boolean)
+    var
+        SalesLine2: Record "Sales Line";
+    begin
+        GetPrepaymentArchivedHeader(SalesHeader, SalesLine, IsHandled, SalesLine2);
+    end;
+
+    local procedure GetPrepaymentArchivedHeader(var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line"; var IsHandled: Boolean; var CheckSalesLine: Record "Sales Line")
+    var
+        SalesHeaderArchive: Record "Sales Header Archive";
+        SalesLineArchive: Record "Sales Line Archive";
+    begin
+        if not SalesLine."Prepayment Line" and (SalesLine."Prepayment Amount" = 0) then
+            exit;
+        IsHandled := true;
+        if SalesHeader.Get(SalesLine."Document Type", SalesLine."Document No.") then
+            exit;
+        SalesHeaderArchive.SetRange("Document Type", SalesLine."Document Type");
+        SalesHeaderArchive.SetRange("No.", SalesLine."Document No.");
+        SalesHeaderArchive.FindLast();
+        SalesHeader.Init();
+        SalesHeader.TransferFields(SalesHeaderArchive);
+        SalesLineArchive.Get(SalesHeader."Document Type", SalesHeader."No.", SalesHeaderArchive."Doc. No. Occurrence", SalesHeaderArchive."Version No.", SalesLine."Line No.");
+        CheckSalesLine.Init();
+        CheckSalesLine.TransferFields(SalesLineArchive);
+    end;
+
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::ArchiveManagement, 'OnBeforeSalesHeaderArchiveInsert', '', false, false)]
+    local procedure ArchiveMgtOnBeforeSalesHeaderArchiveInsert(var SalesHeaderArchive: Record "Sales Header Archive"; SalesHeader: Record "Sales Header")
+    begin
+        SalesHeader.CalcFields("BA Bill-to County Fullname", "BA Sell-to County Fullname", "BA Ship-to County Fullname");
+        SalesHeaderArchive."BA Bill-to County Fullname" := SalesHeader."BA Bill-to County Fullname";
+        SalesHeaderArchive."BA Sell-to County Fullname" := SalesHeader."BA Sell-to County Fullname";
+        SalesHeaderArchive."BA Ship-to County Fullname" := SalesHeader."BA Ship-to County Fullname";
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::ArchiveManagement, 'OnBeforeSalesLineArchiveInsert', '', false, false)]
+    local procedure ArchiveMgtOnBeforeSalesLineArchiveInsert(var SalesLineArchive: Record "Sales Line Archive"; SalesLine: Record "Sales Line")
+    begin
+        SalesLine.CalcFields("BA Stage");
+        SalesLineArchive."BA Stage" := SalesLine."BA Stage";
+    end;
 
     [EventSubscriber(ObjectType::Table, Database::Customer, 'OnAfterValidateEvent', 'Country/Region Code', false, false)]
     local procedure CustomerOnAfterValidateCountryRegionCode(var Rec: Record Customer; var xRec: Record Customer)

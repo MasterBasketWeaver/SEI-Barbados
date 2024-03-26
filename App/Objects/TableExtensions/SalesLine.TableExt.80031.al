@@ -6,6 +6,7 @@ tableextension 80031 "BA Sales Line" extends "Sales Line"
         {
             FieldClass = FlowField;
             CalcFormula = lookup("Sales Header"."ENC Stage" where("Document Type" = field("Document Type"), "No." = field("Document No.")));
+            Editable = false;
             OptionMembers = " ","Open","Closed/Lost","Closed/Other","Archive";
             OptionCaption = ' ,Open,Closed/Lost,Closed/Other,Archive';
         }
