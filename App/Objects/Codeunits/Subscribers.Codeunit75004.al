@@ -588,8 +588,31 @@ codeunit 75004 "BA Subscibers"
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales Tax Calculate", 'OnBeforeAddSalesLineGetSalesHeader', '', false, false)]
     local procedure SalesTaxCalculateOnBeforeAddSalesLineGetSalesHeader(var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line"; var IsHandled: Boolean)
+    begin
+        GetPrepaymentArchivedHeader(SalesHeader, SalesLine, IsHandled);
+    end;
+
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales Tax Calculate", 'OnBeforeIsFinalPrepaidSalesLineOnBeforeGetHeaderAndCheckLine', '', false, false)]
+    local procedure SalesTaxCalculateOnBeforeIsFinalPrepaidSalesLineOnBeforeGetHeaderAndCheckLine(var SalesLine: Record "Sales Line"; var SalesHeader: Record "Sales Header"; var CheckSalesLine: Record "Sales Line"; var IsHandled: Boolean; var Result: Boolean)
+    var
+        SalesLineArchive: Record "Sales Line Archive";
+    begin
+        GetPrepaymentArchivedHeader(SalesHeader, SalesLine, IsHandled, CheckSalesLine);
+        Result := CheckSalesLine."Line No." = 0;
+    end;
+
+    local procedure GetPrepaymentArchivedHeader(var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line"; var IsHandled: Boolean)
+    var
+        SalesLine2: Record "Sales Line";
+    begin
+        GetPrepaymentArchivedHeader(SalesHeader, SalesLine, IsHandled, SalesLine2);
+    end;
+
+    local procedure GetPrepaymentArchivedHeader(var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line"; var IsHandled: Boolean; var CheckSalesLine: Record "Sales Line")
     var
         SalesHeaderArchive: Record "Sales Header Archive";
+        SalesLineArchive: Record "Sales Line Archive";
     begin
         if not SalesLine."Prepayment Line" and (SalesLine."Prepayment Amount" = 0) then
             exit;
@@ -601,8 +624,10 @@ codeunit 75004 "BA Subscibers"
         SalesHeaderArchive.FindLast();
         SalesHeader.Init();
         SalesHeader.TransferFields(SalesHeaderArchive);
+        SalesLineArchive.Get(SalesHeader."Document Type", SalesHeader."No.", SalesHeaderArchive."Doc. No. Occurrence", SalesHeaderArchive."Version No.", SalesLine."Line No.");
+        CheckSalesLine.Init();
+        CheckSalesLine.TransferFields(SalesLineArchive);
     end;
-
 
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::ArchiveManagement, 'OnBeforeSalesHeaderArchiveInsert', '', false, false)]
