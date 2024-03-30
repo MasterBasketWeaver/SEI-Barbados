@@ -369,6 +369,8 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
         SellToPostCode := Rec."Sell-to Post Code";
         ShipToPostCode := Rec."Ship-to Post Code";
         IsEditable := CurrPage.Editable();
+        if Rec."No." <> xRec."No." then
+            CountryEditable := false;
     end;
 
     trigger OnOpenPage()
