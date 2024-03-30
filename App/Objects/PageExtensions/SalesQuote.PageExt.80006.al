@@ -19,7 +19,7 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
             {
                 ApplicationArea = all;
                 Caption = 'Country';
-                Editable = false;
+                Editable = CountryEditable;
             }
         }
         modify("Bill-to Country/Region Code")
@@ -321,7 +321,23 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
                     DocPrint.PrintProformaSalesInvoice(Rec);
                 end;
             }
+        }
+        addlast(Processing)
+        {
+            action("BA Edit Country")
+            {
+                ApplicationArea = all;
+                Image = CountryRegion;
+                Caption = 'Edit Country';
+                Promoted = true;
+                PromotedCategory = Process;
 
+                trigger OnAction()
+                begin
+                    CountryEditable := true;
+                    CurrPage.Update();
+                end;
+            }
         }
 
     }
@@ -338,6 +354,8 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
         SellToPostCode: Code[20];
         [InDataSet]
         IsEditable: boolean;
+        [InDataSet]
+        CountryEditable: boolean;
 
     trigger OnAfterGetCurrRecord()
     begin
@@ -351,5 +369,10 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
         SellToPostCode := Rec."Sell-to Post Code";
         ShipToPostCode := Rec."Ship-to Post Code";
         IsEditable := CurrPage.Editable();
+    end;
+
+    trigger OnOpenPage()
+    begin
+        CountryEditable := false;
     end;
 }
