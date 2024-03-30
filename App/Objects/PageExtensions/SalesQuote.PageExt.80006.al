@@ -410,6 +410,8 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
             EORIMandatory := false;
             UsesEORI := false;
         end;
+        if Rec."No." <> xRec."No." then
+            CountryEditable := false;
     end;
 
     trigger OnOpenPage()
