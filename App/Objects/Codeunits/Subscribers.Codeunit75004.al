@@ -586,21 +586,21 @@ codeunit 75004 "BA Subscibers"
         end;
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales Tax Calculate", 'OnBeforeAddSalesLineGetSalesHeader', '', false, false)]
-    local procedure SalesTaxCalculateOnBeforeAddSalesLineGetSalesHeader(var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line"; var IsHandled: Boolean)
-    begin
-        GetPrepaymentArchivedHeader(SalesHeader, SalesLine, IsHandled);
-    end;
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales Tax Calculate", 'OnBeforeAddSalesLineGetSalesHeader', '', false, false)]
+    // local procedure SalesTaxCalculateOnBeforeAddSalesLineGetSalesHeader(var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line"; var IsHandled: Boolean)
+    // begin
+    //     GetPrepaymentArchivedHeader(SalesHeader, SalesLine, IsHandled);
+    // end;
 
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales Tax Calculate", 'OnBeforeIsFinalPrepaidSalesLineOnBeforeGetHeaderAndCheckLine', '', false, false)]
-    local procedure SalesTaxCalculateOnBeforeIsFinalPrepaidSalesLineOnBeforeGetHeaderAndCheckLine(var SalesLine: Record "Sales Line"; var SalesHeader: Record "Sales Header"; var CheckSalesLine: Record "Sales Line"; var IsHandled: Boolean; var Result: Boolean)
-    var
-        SalesLineArchive: Record "Sales Line Archive";
-    begin
-        GetPrepaymentArchivedHeader(SalesHeader, SalesLine, IsHandled, CheckSalesLine);
-        Result := CheckSalesLine."Line No." = 0;
-    end;
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales Tax Calculate", 'OnBeforeIsFinalPrepaidSalesLineOnBeforeGetHeaderAndCheckLine', '', false, false)]
+    // local procedure SalesTaxCalculateOnBeforeIsFinalPrepaidSalesLineOnBeforeGetHeaderAndCheckLine(var SalesLine: Record "Sales Line"; var SalesHeader: Record "Sales Header"; var CheckSalesLine: Record "Sales Line"; var IsHandled: Boolean; var Result: Boolean)
+    // var
+    //     SalesLineArchive: Record "Sales Line Archive";
+    // begin
+    //     GetPrepaymentArchivedHeader(SalesHeader, SalesLine, IsHandled, CheckSalesLine);
+    //     Result := CheckSalesLine."Line No." = 0;
+    // end;
 
     local procedure GetPrepaymentArchivedHeader(var SalesHeader: Record "Sales Header"; var SalesLine: Record "Sales Line"; var IsHandled: Boolean)
     var

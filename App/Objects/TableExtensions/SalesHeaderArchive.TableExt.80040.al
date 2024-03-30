@@ -43,12 +43,12 @@ tableextension 80040 "BA Sales Header Archive" extends "Sales Header Archive"
             OptionMembers = " ","Open","Closed/Lost","Closed/Other","Archive";
             OptionCaption = ' ,Open,Closed/Lost,Closed/Other,Archive';
         }
-        field(75036; "ENC Timeline"; Enum "BA Timeline")
-        {
-            DataClassification = CustomerContent;
-            Caption = 'Timeline';
-            Editable = false;
-        }
+        // field(75036; "ENC Timeline"; Enum "BA Timeline")
+        // {
+        //     DataClassification = CustomerContent;
+        //     Caption = 'Timeline';
+        //     Editable = false;
+        // }
         field(75037; "ENC Lead Time"; Code[20])
         {
             Caption = 'Lead Time';
