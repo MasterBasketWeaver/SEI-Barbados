@@ -26,7 +26,7 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
             {
                 ApplicationArea = all;
                 Caption = 'Country';
-                Editable = false;
+                Editable = CountryEditable;
             }
         }
         modify("Bill-to Country/Region Code")
@@ -41,7 +41,7 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
             {
                 ApplicationArea = all;
                 Caption = 'Country';
-                Editable = CountryEditable;
+                Editable = false;
             }
         }
         modify("Ship-to Country/Region Code")
@@ -306,7 +306,7 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
                 Image = CountryRegion;
                 Caption = 'Edit Country';
                 Promoted = true;
-                PromotedCategory = Process;
+                PromotedCategory = Category4;
 
                 trigger OnAction()
                 begin
