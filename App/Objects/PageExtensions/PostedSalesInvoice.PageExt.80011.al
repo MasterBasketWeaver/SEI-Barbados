@@ -89,5 +89,11 @@ pageextension 80011 "BA Posted Sales Invoice" extends "Posted Sales Invoice"
                 ApplicationArea = all;
             }
         }
+        modify("Ship-to UPS Zone")
+        {
+            ApplicationArea = all;
+            Visible = false;
+            Editable = false;
+        }
     }
 }
