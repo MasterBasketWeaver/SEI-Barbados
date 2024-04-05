@@ -577,6 +577,14 @@ codeunit 75004 "BA Subscibers"
         SalesInvoiceHeader.Modify(false);
     end;
 
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnBeforeUpdateSalesLinesByFieldNo', '', false, false)]
+    local procedure SalesHeaderOnBeforeUpdateSalesLinesByFieldNo(CurrentFieldNo: Integer; var IsHandled: Boolean; var SalesHeader: Record "Sales Header")
+    begin
+        if (SalesHeader."Document Type" = SalesHeader."Document Type"::Order) and (CurrentFieldNo = SalesHeader.FieldNo("Shipping Agent Code")) then
+            IsHandled := true;
+    end;
+
+
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnBeforeInsertEvent', '', false, false)]
     local procedure SalesHeaderOnAfterInsert(var Rec: Record "Sales Header")
     begin

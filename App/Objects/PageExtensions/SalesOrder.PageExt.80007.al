@@ -343,6 +343,12 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
                 end;
             }
         }
+        modify("Ship-to UPS Zone")
+        {
+            ApplicationArea = all;
+            Visible = false;
+            Editable = false;
+        }
 
     }
 
