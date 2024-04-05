@@ -566,42 +566,27 @@ codeunit 75004 "BA Subscibers"
             Error(NonServiceCustomerErr, Item."No.");
     end;
 
-
-    [EventSubscriber(ObjectType::Table, Database::Customer, 'OnAfterValidateEvent', 'Country/Region Code', false, false)]
-    local procedure CustomerOnAfterValidateCountryRegionCode(var Rec: Record Customer; var xRec: Record Customer)
-    var
-        CountryRegion: Record "Country/Region";
-    begin
-        if (Rec."Country/Region Code" = xRec."Country/Region Code") or not CountryRegion.Get(Rec."Country/Region Code") then
-            exit;
-        Rec."BA Sell-to State Mandatory" := CountryRegion."BA Sell-to State Mandatory";
-        Rec."BA Ship-to State Mandatory" := CountryRegion."BA Ship-to State Mandatory";
-        Rec."BA FID No. Mandatory" := CountryRegion."BA FID No. Mandatory";
-        Rec."BA EORI No. Mandatory" := CountryRegion."BA EORI No. Mandatory";
-        Rec.Modify(true);
-    end;
-
-
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterCheckMandatoryFields', '', false, false)]
     local procedure SalesPostOnAfterCheckMandatoryFields(var SalesHeader: Record "Sales Header")
     var
-        Customer: Record Customer;
         CountryRegion: Record "Country/Region";
     begin
-        Customer.Get(SalesHeader."Sell-to Customer No.");
-        if Customer."BA Sell-to State Mandatory" and (SalesHeader."Sell-to County" = '') then
-            Error(SellToTestfieldErr, SalesHeader.FieldNo("Document Type"), SalesHeader."Document Type", SalesHeader.FieldNo("No."), SalesHeader."No.");
-        if Customer."BA Ship-to State Mandatory" and (SalesHeader."Ship-to County" = '') then
-            Error(ShipToTestfieldErr, SalesHeader.FieldNo("Document Type"), SalesHeader."Document Type", SalesHeader.FieldNo("No."), SalesHeader."No.");
         SalesHeader.TestField("ENC Phone No.");
         SalesHeader.TestField("ENC Ship-To Phone No.");
         SalesHeader.TestField("Inco Terms");
-        if Customer."BA FID No. Mandatory" and CountryRegion.Get(SalesHeader."Ship-to Country/Region Code") and CountryRegion."BA FID No. Mandatory" then
-            if (SalesHeader."ENC Tax Registration No." = '') and (SalesHeader."ENC Ship-To Tax Registration No." = '') then
-                Error(FIDNoFieldErr, SalesHeader.FieldCaption("ENC Tax Registration No."), SalesHeader.FieldCaption("ENC Ship-To Tax Registration No."));
-        if Customer."BA EORI No. Mandatory" and CountryRegion.Get(SalesHeader."Ship-to Country/Region Code") and CountryRegion."BA EORI No. Mandatory" then
-            if (SalesHeader."BA EORI No." = '') and (SalesHeader."BA Ship-To EORI No." = '') then
-                Error(FIDNoFieldErr, SalesHeader.FieldCaption("BA EORI No."), SalesHeader.FieldCaption("BA Ship-To EORI No."));
+        if CountryRegion.Get(SalesHeader."Ship-to Country/Region Code") then begin
+            if CountryRegion."BA Ship-to State Mandatory" and (SalesHeader."Ship-to County" = '') then
+                Error(ShipToTestfieldErr, SalesHeader.FieldNo("Document Type"), SalesHeader."Document Type", SalesHeader.FieldNo("No."), SalesHeader."No.");
+            if CountryRegion."BA FID No. Mandatory" then
+                if (SalesHeader."ENC Tax Registration No." = '') and (SalesHeader."ENC Ship-To Tax Registration No." = '') then
+                    Error(MissingOneOfTwoValuesErr, SalesHeader.FieldCaption("ENC Tax Registration No."), SalesHeader.FieldCaption("ENC Ship-To Tax Registration No."));
+            if CountryRegion."BA EORI No. Mandatory" then
+                if (SalesHeader."BA EORI No." = '') and (SalesHeader."BA Ship-To EORI No." = '') then
+                    Error(MissingOneOfTwoValuesErr, SalesHeader.FieldCaption("BA EORI No."), SalesHeader.FieldCaption("BA Ship-To EORI No."));
+        end;
+        if CountryRegion.Get(SalesHeader."Sell-to Country/Region Code") then
+            if CountryRegion."BA Sell-to State Mandatory" and (SalesHeader."Sell-to County" = '') then
+                Error(SellToTestfieldErr, SalesHeader.FieldNo("Document Type"), SalesHeader."Document Type", SalesHeader.FieldNo("No."), SalesHeader."No.");
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterPostSalesDoc', '', false, false)]
@@ -634,6 +619,6 @@ codeunit 75004 "BA Subscibers"
         NonServiceCustomerErr: Label '%1 can only be sold to Service Center customers.';
         SellToTestFieldErr: Label 'Sell-to State must have a value in Sales Header %1=%2, %3=%4.';
         ShipToTestFieldErr: Label 'Ship-to State must have a value in Sales Header %1=%2, %3=%4.';
-        FIDNoFieldErr: Label 'Must specify a value for either the %1 or %2 field.';
+        MissingOneOfTwoValuesErr: Label 'Must specify a value for either the %1 or %2 field.';
         COCMsg: Label 'A Certificate of Conformity (COC) is required for customer %1.\Please fill out the required documentation after invoicing.';
 }

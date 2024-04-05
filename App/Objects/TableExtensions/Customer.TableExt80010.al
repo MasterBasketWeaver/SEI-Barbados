@@ -48,21 +48,25 @@ tableextension 80010 "BA Customer" extends Customer
         {
             DataClassification = CustomerContent;
             Caption = 'Sell-to State Mandatory';
+            ObsoleteState = Removed;
         }
         field(80031; "BA Ship-to State Mandatory"; Boolean)
         {
             DataClassification = CustomerContent;
             Caption = 'Ship-to State Mandatory';
+            ObsoleteState = Removed;
         }
         field(80032; "BA FID No. Mandatory"; Boolean)
         {
             DataClassification = CustomerContent;
             Caption = 'FID No. Mandatory';
+            ObsoleteState = Removed;
         }
         field(80033; "BA EORI No. Mandatory"; Boolean)
         {
             DataClassification = CustomerContent;
             Caption = 'EORI No. Mandatory';
+            ObsoleteState = Removed;
         }
         field(80034; "BA COC Mandatory"; Boolean)
         {

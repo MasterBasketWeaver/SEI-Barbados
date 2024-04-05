@@ -148,22 +148,6 @@ pageextension 80013 "BA Customer Card" extends "Customer Card"
                 {
                     ApplicationArea = all;
                 }
-                field("BA Sell-to State Mandatory"; Rec."BA Sell-to State Mandatory")
-                {
-                    ApplicationArea = all;
-                }
-                field("BA Ship-to State Mandatory"; Rec."BA Ship-to State Mandatory")
-                {
-                    ApplicationArea = all;
-                }
-                field("BA FID No. Mandatory"; Rec."BA FID No. Mandatory")
-                {
-                    ApplicationArea = all;
-                }
-                field("BA Sell-to EORI No."; Rec."BA EORI No. Mandatory")
-                {
-                    ApplicationArea = all;
-                }
                 field("BA COC Mandatory"; Rec."BA COC Mandatory")
                 {
                     ApplicationArea = all;

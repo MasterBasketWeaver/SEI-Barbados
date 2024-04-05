@@ -310,8 +310,7 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
 
                 trigger OnValidate()
                 begin
-                    if UsesEORI then
-                        EORIMandatory := (Rec."BA EORI No." = '') and (Rec."BA Ship-to EORI No." = '');
+                    SetEORIMandatoryFields();
                 end;
             }
         }
@@ -324,8 +323,7 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
 
                 trigger OnValidate()
                 begin
-                    if UsesEORI then
-                        EORIMandatory := (Rec."BA EORI No." = '') and (Rec."BA Ship-to EORI No." = '');
+                    SetEORIMandatoryFields();
                 end;
             }
         }
@@ -385,13 +383,25 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
         SellToPostCode := Rec."Sell-to Post Code";
         ShipToPostCode := Rec."Ship-to Post Code";
         IsEditable := CurrPage.Editable();
-        if (Customer."No." <> Rec."Sell-to Customer No.") and (Rec."Sell-to Customer No." <> '') and Customer.Get(Rec."Sell-to Customer No.") then begin
-            EORIMandatory := Customer."BA EORI No. Mandatory";
-            if EORIMandatory then
-                UsesEORI := true;
+        SetShipToMandatoryFields();
+    end;
+
+    local procedure SetShipToMandatoryFields()
+    var
+        CountryRegion: Record "Country/Region";
+    begin
+        if (Rec."Ship-to Country/Region Code" <> '') and CountryRegion.Get(Rec."Ship-to Country/Region Code") then begin
+            UsesEORI := CountryRegion."BA EORI No. Mandatory";
+            SetEORIMandatoryFields();
         end else begin
             EORIMandatory := false;
             UsesEORI := false;
         end;
+    end;
+
+    local procedure SetEORIMandatoryFields()
+    begin
+        if UsesEORI then
+            EORIMandatory := (Rec."BA EORI No." = '') and (Rec."BA Ship-to EORI No." = '');
     end;
 }
