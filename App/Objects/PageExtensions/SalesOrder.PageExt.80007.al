@@ -26,7 +26,7 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
             {
                 ApplicationArea = all;
                 Caption = 'Country';
-                Editable = false;
+                Editable = CountryEditable;
             }
         }
         modify("Bill-to Country/Region Code")
@@ -346,6 +346,27 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
 
     }
 
+    actions
+    {
+        addlast(Processing)
+        {
+            action("BA Edit Country")
+            {
+                ApplicationArea = all;
+                Image = CountryRegion;
+                Caption = 'Edit Country';
+                Promoted = true;
+                PromotedCategory = Category4;
+
+                trigger OnAction()
+                begin
+                    CountryEditable := true;
+                    CurrPage.Update();
+                end;
+            }
+        }
+    }
+
     var
         BillToState: Code[30];
         ShipToState: Code[30];
@@ -368,7 +389,7 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
         [InDataSet]
         EORIMandatory: Boolean;
         UsesEORI: Boolean;
-
+        CountryEditable: boolean;
 
     trigger OnAfterGetCurrRecord()
     begin
@@ -422,5 +443,12 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
         CountryRegion: Record "Country/Region";
     begin
         SellToMandatory := CountryRegion.Get(Rec."Sell-to Country/Region Code") and CountryRegion."BA Sell-to State Mandatory";
+        if Rec."No." <> xRec."No." then
+            CountryEditable := false;
+    end;
+
+    trigger OnOpenPage()
+    begin
+        CountryEditable := false;
     end;
 }
