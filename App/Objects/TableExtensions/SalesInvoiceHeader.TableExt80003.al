@@ -61,6 +61,18 @@ tableextension 80003 "BA Sales Invoice Header" extends "Sales Invoice Header"
             Caption = 'Province/State Fullname';
             Editable = false;
         }
+        field(80021; "BA EORI No."; Text[20])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'EORI No.';
+            Editable = false;
+        }
+        field(80022; "BA Ship-to EORI No."; Text[20])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Ship-to EORI No.';
+            Editable = false;
+        }
     }
 
     fieldgroups

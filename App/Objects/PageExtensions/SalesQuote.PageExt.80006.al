@@ -300,6 +300,32 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
             Editable = false;
             Enabled = false;
         }
+        addbefore("Other Tax No.")
+        {
+            field("BA EORI No."; Rec."BA EORI No.")
+            {
+                ApplicationArea = all;
+                ShowMandatory = EORIMandatory;
+
+                trigger OnValidate()
+                begin
+                    SetEORIMandatoryFields();
+                end;
+            }
+        }
+        addbefore("Other Ship-To Tax No.")
+        {
+            field("BA Ship-to EORI No."; Rec."BA Ship-to EORI No.")
+            {
+                ApplicationArea = all;
+                ShowMandatory = EORIMandatory;
+
+                trigger OnValidate()
+                begin
+                    SetEORIMandatoryFields();
+                end;
+            }
+        }
     }
 
     actions
@@ -337,9 +363,14 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
         ShipToPostCode: Code[20];
         SellToPostCode: Code[20];
         [InDataSet]
-        IsEditable: boolean;
+        IsEditable: Boolean;
+        [InDataSet]
+        EORIMandatory: Boolean;
+        UsesEORI: Boolean;
 
     trigger OnAfterGetCurrRecord()
+    var
+        Customer: Record Customer;
     begin
         BillToCity := Rec."Bill-to City";
         SellToCity := Rec."Sell-to City";
@@ -351,5 +382,25 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
         SellToPostCode := Rec."Sell-to Post Code";
         ShipToPostCode := Rec."Ship-to Post Code";
         IsEditable := CurrPage.Editable();
+        SetShipToMandatoryFields();
+    end;
+
+    local procedure SetShipToMandatoryFields()
+    var
+        CountryRegion: Record "Country/Region";
+    begin
+        if (Rec."Ship-to Country/Region Code" <> '') and CountryRegion.Get(Rec."Ship-to Country/Region Code") then begin
+            UsesEORI := CountryRegion."BA EORI No. Mandatory";
+            SetEORIMandatoryFields();
+        end else begin
+            EORIMandatory := false;
+            UsesEORI := false;
+        end;
+    end;
+
+    local procedure SetEORIMandatoryFields()
+    begin
+        if UsesEORI then
+            EORIMandatory := (Rec."BA EORI No." = '') and (Rec."BA Ship-to EORI No." = '');
     end;
 }

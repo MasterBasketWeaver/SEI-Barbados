@@ -74,6 +74,7 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
                 CaptionClass = '5,1,' + Rec."Sell-to Country/Region Code";
                 TableRelation = "BA Province/State".Symbol where("Country/Region Code" = field("Sell-to Country/Region Code"));
                 Editable = IsEditable;
+                ShowMandatory = SellToMandatory;
 
                 trigger OnValidate()
                 begin
@@ -103,6 +104,7 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
                 CaptionClass = '5,1,' + Rec."Ship-to Country/Region Code";
                 TableRelation = "BA Province/State".Symbol where("Country/Region Code" = field("Ship-to Country/Region Code"));
                 Editable = IsEditable;
+                ShowMandatory = ShipToMandatory;
 
                 trigger OnValidate()
                 begin
@@ -272,6 +274,7 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
                     Rec."Ship-to Post Code" := ShipToPostCode;
                 end;
             }
+
         }
         modify("Outbound Whse. Handling Time")
         {
@@ -294,6 +297,53 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
             Editable = false;
             Enabled = false;
         }
+
+        addbefore("Other Tax No.")
+        {
+            field("BA Tax Registration No."; Rec."ENC Tax Registration No.")
+            {
+                ApplicationArea = All;
+                ShowMandatory = FIDMandatory;
+
+                trigger OnValidate()
+                begin
+                    SetFIDMandatoryFields();
+                end;
+            }
+            field("BA EORI No."; Rec."BA EORI No.")
+            {
+                ApplicationArea = all;
+                ShowMandatory = EORIMandatory;
+
+                trigger OnValidate()
+                begin
+                    SetEORIMandatoryFields();
+                end;
+            }
+        }
+        addbefore("Other Ship-To Tax No.")
+        {
+            field("ENC Ship-To Tax Registration No."; Rec."ENC Ship-To Tax Registration No.")
+            {
+                ApplicationArea = All;
+                ShowMandatory = FIDMandatory;
+                trigger OnValidate()
+                begin
+                    SetFIDMandatoryFields();
+                end;
+            }
+            field("BA Ship-to EORI No."; Rec."BA Ship-to EORI No.")
+            {
+                ApplicationArea = all;
+                ShowMandatory = EORIMandatory;
+
+                trigger OnValidate()
+                begin
+                    SetEORIMandatoryFields();
+                end;
+            }
+        }
+
     }
 
     var
@@ -308,6 +358,17 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
         SellToPostCode: Code[20];
         [InDataSet]
         IsEditable: boolean;
+        [InDataSet]
+        ShipToMandatory: Boolean;
+        [InDataSet]
+        SellToMandatory: Boolean;
+        [InDataSet]
+        FIDMandatory: Boolean;
+        UsesFID: Boolean;
+        [InDataSet]
+        EORIMandatory: Boolean;
+        UsesEORI: Boolean;
+
 
     trigger OnAfterGetCurrRecord()
     begin
@@ -321,5 +382,45 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
         SellToPostCode := Rec."Sell-to Post Code";
         ShipToPostCode := Rec."Ship-to Post Code";
         IsEditable := CurrPage.Editable();
+        SetShipToMandatoryFields();
+        SetSellToMandatoryFields();
+    end;
+
+    local procedure SetShipToMandatoryFields()
+    var
+        CountryRegion: Record "Country/Region";
+    begin
+        if (Rec."Ship-to Country/Region Code" <> '') and CountryRegion.Get(Rec."Ship-to Country/Region Code") then begin
+            ShipToMandatory := CountryRegion."BA Ship-to State Mandatory";
+            UsesFID := CountryRegion."BA FID No. Mandatory";
+            UsesEORI := CountryRegion."BA EORI No. Mandatory";
+            SetFIDMandatoryFields();
+            SetEORIMandatoryFields();
+        end else begin
+            ShipToMandatory := false;
+            FIDMandatory := false;
+            UsesFID := false;
+            EORIMandatory := false;
+            UsesEORI := false;
+        end;
+    end;
+
+    local procedure SetEORIMandatoryFields()
+    begin
+        if UsesEORI then
+            EORIMandatory := (Rec."BA EORI No." = '') and (Rec."BA Ship-to EORI No." = '');
+    end;
+
+    local procedure SetFIDMandatoryFields()
+    begin
+        if UsesFID then
+            FIDMandatory := (Rec."ENC Tax Registration No." = '') and (Rec."ENC Ship-To Tax Registration No." = '');
+    end;
+
+    local procedure SetSellToMandatoryFields()
+    var
+        CountryRegion: Record "Country/Region";
+    begin
+        SellToMandatory := CountryRegion.Get(Rec."Sell-to Country/Region Code") and CountryRegion."BA Sell-to State Mandatory";
     end;
 }

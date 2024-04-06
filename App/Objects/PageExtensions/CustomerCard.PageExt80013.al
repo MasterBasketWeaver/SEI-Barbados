@@ -126,12 +126,55 @@ pageextension 80013 "BA Customer Card" extends "Customer Card"
             Enabled = false;
             Editable = false;
         }
-        addafter("Service Zone Code")
+        addlast(Content)
         {
-            field("BA SEI Service Center"; Rec."BA SEI Service Center")
+            group("BA Account & System Control")
+            {
+                Caption = 'Account & System Control';
+                field("BA Blocked"; Rec.Blocked)
+                {
+                    ApplicationArea = all;
+                }
+                field("BA Privacy Blocked"; Rec."Privacy Blocked")
+                {
+                    ApplicationArea = all;
+                }
+                field("BA Salesperson/Country Mandatory"; Rec."Salesperson/Country Manadatory")
+                {
+                    ToolTip = 'Specifies the value of the Salesperson/Country Mandatory field.';
+                    ApplicationArea = All;
+                }
+                field("BA SEI Service Center"; Rec."BA SEI Service Center")
+                {
+                    ApplicationArea = all;
+                }
+                field("BA COC Mandatory"; Rec."BA COC Mandatory")
+                {
+                    ApplicationArea = all;
+                }
+            }
+        }
+        addafter("VAT Registration No.")
+        {
+            field("BA EORI No."; Rec."BA EORI No.")
             {
                 ApplicationArea = all;
             }
+            field("Other Tax No."; Rec."Other Tax No.")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Other Tax No. field.';
+            }
+        }
+        modify(Blocked)
+        {
+            ApplicationArea = all;
+            Visible = false;
+        }
+        modify("Privacy Blocked")
+        {
+            ApplicationArea = all;
+            Visible = false;
         }
     }
 
