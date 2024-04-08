@@ -580,7 +580,8 @@ codeunit 75004 "BA Subscibers"
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnBeforeUpdateSalesLinesByFieldNo', '', false, false)]
     local procedure SalesHeaderOnBeforeUpdateSalesLinesByFieldNo(CurrentFieldNo: Integer; var IsHandled: Boolean; var SalesHeader: Record "Sales Header")
     begin
-        if (SalesHeader."Document Type" = SalesHeader."Document Type"::Order) and (CurrentFieldNo = SalesHeader.FieldNo("Shipping Agent Code")) then
+        if (CurrentFieldNo = SalesHeader.FieldNo("Shipping Agent Code"))
+                and (SalesHeader."Document Type" in [SalesHeader."Document Type"::Order, SalesHeader."Document Type"::Quote]) then
             IsHandled := true;
     end;
 
