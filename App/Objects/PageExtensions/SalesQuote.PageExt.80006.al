@@ -418,14 +418,16 @@ pageextension 80006 "BA Sales Quote" extends "Sales Quote"
             CountryEditable := false;
     end;
 
-    trigger OnOpenPage()
-    begin
-        CountryEditable := false;
-    end;
-
     local procedure SetEORIMandatoryFields()
     begin
         if UsesEORI then
             EORIMandatory := (Rec."BA EORI No." = '') and (Rec."BA Ship-to EORI No." = '');
+        if Rec."No." <> xRec."No." then
+            CountryEditable := false;
+    end;
+
+    trigger OnOpenPage()
+    begin
+        CountryEditable := false;
     end;
 }

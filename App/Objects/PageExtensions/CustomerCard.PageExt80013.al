@@ -176,6 +176,11 @@ pageextension 80013 "BA Customer Card" extends "Customer Card"
             ApplicationArea = all;
             Visible = false;
         }
+        modify("Link-to-Agent")
+        {
+            ApplicationArea = all;
+            Editable = false;
+        }
     }
 
     var

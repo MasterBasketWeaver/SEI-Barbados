@@ -395,7 +395,6 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
         [InDataSet]
         EORIMandatory: Boolean;
         UsesEORI: Boolean;
-        [InDataSet]
         CountryEditable: boolean;
 
     trigger OnAfterGetCurrRecord()
@@ -457,5 +456,7 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
         CountryRegion: Record "Country/Region";
     begin
         SellToMandatory := CountryRegion.Get(Rec."Sell-to Country/Region Code") and CountryRegion."BA Sell-to State Mandatory";
+        if Rec."No." <> xRec."No." then
+            CountryEditable := false;
     end;
 }
