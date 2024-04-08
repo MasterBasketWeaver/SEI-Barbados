@@ -29,6 +29,10 @@ pageextension 80016 "BA Country/Regions" extends "Countries/Regions"
             {
                 ApplicationArea = all;
             }
+            field("BA Country Agent"; Rec."BA Country Agent")
+            {
+                ApplicationArea = all;
+            }
         }
     }
 
