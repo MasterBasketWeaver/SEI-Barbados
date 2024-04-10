@@ -589,6 +589,15 @@ codeunit 75004 "BA Subscibers"
                 Error(SellToTestfieldErr, SalesHeader.FieldNo("Document Type"), SalesHeader."Document Type", SalesHeader.FieldNo("No."), SalesHeader."No.");
     end;
 
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnBeforeUpdateSalesLinesByFieldNo', '', false, false)]
+    local procedure SalesHeaderOnBeforeUpdateSalesLinesByFieldNo(CurrentFieldNo: Integer; var IsHandled: Boolean; var SalesHeader: Record "Sales Header")
+    begin
+        if (CurrentFieldNo = SalesHeader.FieldNo("Shipping Agent Code"))
+                and (SalesHeader."Document Type" in [SalesHeader."Document Type"::Order, SalesHeader."Document Type"::Quote]) then
+            IsHandled := true;
+    end;
+
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterPostSalesDoc', '', false, false)]
     local procedure SalesPostOnAfterPostSalesDoc(var SalesHeader: Record "Sales Header"; PreviewMode: Boolean)
     var
