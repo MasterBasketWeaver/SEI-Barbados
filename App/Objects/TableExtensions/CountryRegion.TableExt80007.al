@@ -60,6 +60,20 @@ tableextension 80007 "BA Country/Region" extends "Country/Region"
             //     Customer.ModifyAll("BA EORI No. Mandatory", Rec."BA EORI No. Mandatory");
             // end;
         }
+        field(80040; "BA Country Agent"; Code[20])
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Country Agent';
+            TableRelation = Customer."No.";
+
+            trigger OnValidate()
+            var
+                Customer: Record Customer;
+            begin
+                Customer.SetRange("Country/Region Code", Rec.Code);
+                Customer.ModifyAll("Link-to-Agent", Rec."BA Country Agent");
+            end;
+        }
     }
 
     trigger OnDelete()
