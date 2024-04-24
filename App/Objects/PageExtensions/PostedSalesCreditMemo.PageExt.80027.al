@@ -77,5 +77,12 @@ pageextension 80027 "BA Posted Sales Cr.Memo" extends "Posted Sales Credit Memo"
                 Editable = false;
             }
         }
+        addafter("Posting Date")
+        {
+            field("BA Actual Posting DateTime"; Rec."BA Actual Posting DateTime")
+            {
+                ApplicationArea = all;
+            }
+        }
     }
 }

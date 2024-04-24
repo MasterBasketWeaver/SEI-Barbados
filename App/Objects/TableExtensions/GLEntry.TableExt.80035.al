@@ -28,5 +28,21 @@ tableextension 80035 "BA G/L Entries" extends "G/L Entry"
                 Rec.CalcFields("BA Prov/State Name for Reports");
             end;
         }
+        field(80100; "BA Actual Posting DateTime"; DateTime)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Actual Posting DateTime';
+            Editable = false;
+        }
     }
+
+    keys
+    {
+        key("BA Actual Posting"; "BA Actual Posting DateTime") { }
+    }
+
+    trigger OnInsert()
+    begin
+        Rec."BA Actual Posting DateTime" := CurrentDateTime();
+    end;
 }

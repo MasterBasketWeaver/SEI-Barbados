@@ -68,5 +68,12 @@ pageextension 80024 "BA Posted Purchase Credit Memo" extends "Posted Purchase Cr
                 ApplicationArea = all;
             }
         }
+        addafter("Posting Date")
+        {
+            field("BA Actual Posting DateTime"; Rec."BA Actual Posting DateTime")
+            {
+                ApplicationArea = all;
+            }
+        }
     }
 }
