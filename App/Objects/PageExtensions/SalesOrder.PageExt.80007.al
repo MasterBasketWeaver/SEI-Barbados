@@ -349,7 +349,6 @@ pageextension 80007 "BA Sales Order" extends "Sales Order"
             Visible = false;
             Editable = false;
         }
-
     }
 
     actions

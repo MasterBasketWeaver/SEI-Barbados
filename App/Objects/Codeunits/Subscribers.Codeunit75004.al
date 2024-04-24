@@ -577,13 +577,6 @@ codeunit 75004 "BA Subscibers"
         SalesInvoiceHeader.Modify(false);
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnBeforeUpdateSalesLinesByFieldNo', '', false, false)]
-    local procedure SalesHeaderOnBeforeUpdateSalesLinesByFieldNo(CurrentFieldNo: Integer; var IsHandled: Boolean; var SalesHeader: Record "Sales Header")
-    begin
-        if (CurrentFieldNo = SalesHeader.FieldNo("Shipping Agent Code"))
-                and (SalesHeader."Document Type" in [SalesHeader."Document Type"::Order, SalesHeader."Document Type"::Quote]) then
-            IsHandled := true;
-    end;
 
 
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnBeforeInsertEvent', '', false, false)]
@@ -663,6 +656,8 @@ codeunit 75004 "BA Subscibers"
     var
         CountryRegion: Record "Country/Region";
     begin
+        if SalesHeader."Document Type" in [SalesHeader."Document Type"::"Return Order", SalesHeader."Document Type"::"Credit Memo"] then
+            exit;
         SalesHeader.TestField("ENC Phone No.");
         SalesHeader.TestField("ENC Ship-To Phone No.");
         SalesHeader.TestField("Inco Terms");
@@ -680,6 +675,15 @@ codeunit 75004 "BA Subscibers"
             if CountryRegion."BA Sell-to State Mandatory" and (SalesHeader."Sell-to County" = '') then
                 Error(SellToTestfieldErr, SalesHeader.FieldNo("Document Type"), SalesHeader."Document Type", SalesHeader.FieldNo("No."), SalesHeader."No.");
     end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnBeforeUpdateSalesLinesByFieldNo', '', false, false)]
+    local procedure SalesHeaderOnBeforeUpdateSalesLinesByFieldNo(CurrentFieldNo: Integer; var IsHandled: Boolean; var SalesHeader: Record "Sales Header")
+    begin
+        if (CurrentFieldNo = SalesHeader.FieldNo("Shipping Agent Code"))
+                and (SalesHeader."Document Type" in [SalesHeader."Document Type"::Order, SalesHeader."Document Type"::Quote]) then
+            IsHandled := true;
+    end;
+
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterPostSalesDoc', '', false, false)]
     local procedure SalesPostOnAfterPostSalesDoc(var SalesHeader: Record "Sales Header"; PreviewMode: Boolean)
