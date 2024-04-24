@@ -571,6 +571,8 @@ codeunit 75004 "BA Subscibers"
     var
         CountryRegion: Record "Country/Region";
     begin
+        if SalesHeader."Document Type" in [SalesHeader."Document Type"::"Return Order", SalesHeader."Document Type"::"Credit Memo"] then
+            exit;
         SalesHeader.TestField("ENC Phone No.");
         SalesHeader.TestField("ENC Ship-To Phone No.");
         SalesHeader.TestField("Inco Terms");
