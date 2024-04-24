@@ -76,5 +76,12 @@ pageextension 80018 "BA Posted Purchase Invoice" extends "Posted Purchase Invoic
                 Editable = false;
             }
         }
+        addafter("Posting Date")
+        {
+            field("BA Actual Posting DateTime"; Rec."BA Actual Posting DateTime")
+            {
+                ApplicationArea = all;
+            }
+        }
     }
 }

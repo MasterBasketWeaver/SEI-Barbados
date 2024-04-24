@@ -117,5 +117,12 @@ pageextension 80011 "BA Posted Sales Invoice" extends "Posted Sales Invoice"
             Visible = false;
             Editable = false;
         }
+        addafter("Posting Date")
+        {
+            field("BA Actual Posting DateTime"; Rec."BA Actual Posting DateTime")
+            {
+                ApplicationArea = all;
+            }
+        }
     }
 }

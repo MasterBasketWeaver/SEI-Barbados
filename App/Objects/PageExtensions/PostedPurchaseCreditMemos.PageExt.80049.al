@@ -1,4 +1,4 @@
-pageextension 80044 "BA Posted Purchase Invoices" extends "Posted Purchase Invoices"
+pageextension 80049 "BA Posted Purchase Memos" extends "Posted Purchase Credit Memos"
 {
     layout
     {

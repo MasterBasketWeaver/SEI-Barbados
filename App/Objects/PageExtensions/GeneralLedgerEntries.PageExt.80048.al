@@ -13,5 +13,12 @@ pageextension 80048 "BA General Ledger Entries" extends "General Ledger Entries"
                 ApplicationArea = all;
             }
         }
+        addafter("Posting Date")
+        {
+            field("BA Actual Posting DateTime"; Rec."BA Actual Posting DateTime")
+            {
+                ApplicationArea = all;
+            }
+        }
     }
 }

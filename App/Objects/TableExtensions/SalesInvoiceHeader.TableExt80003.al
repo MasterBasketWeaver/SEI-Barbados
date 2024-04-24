@@ -73,10 +73,27 @@ tableextension 80003 "BA Sales Invoice Header" extends "Sales Invoice Header"
             Caption = 'Ship-to EORI No.';
             Editable = false;
         }
+        field(80100; "BA Actual Posting DateTime"; DateTime)
+        {
+            DataClassification = CustomerContent;
+            Caption = 'Actual Posting DateTime';
+            Editable = false;
+        }
+    }
+
+    keys
+    {
+        key("BA Actual Posting"; "BA Actual Posting DateTime") { }
     }
 
     fieldgroups
     {
         addlast(DropDown; "BA Posting Date", "BA Order No.", "BA Sell-to Customer No.", "BA Sell-to Customer Name", "BA Ship-to Name") { }
     }
+
+
+    trigger OnInsert()
+    begin
+        Rec."BA Actual Posting DateTime" := CurrentDateTime();
+    end;
 }

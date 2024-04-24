@@ -4,6 +4,10 @@ pageextension 80012 "BA Posted Sales Invoices" extends "Posted Sales Invoices"
     {
         addafter("Posting Date")
         {
+            field("BA Actual Posting DateTime"; Rec."BA Actual Posting DateTime")
+            {
+                ApplicationArea = all;
+            }
             field("BA Quote Date"; Rec."BA Quote Date")
             {
                 ApplicationArea = all;
